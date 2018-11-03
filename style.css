@@ -1,0 +1,29 @@
+h1{
+    text-align: center;
+}
+
+.navbar-collapse{
+    text-align: right;
+}
+
+.page-header{
+    border-bottom: 2px solid gray;
+}
+
+body{
+    /*add background here*/
+}
+
+.jumbotron{
+    background-color: rebeccapurple;
+    color: white;
+}
+
+
+h2, h3{
+    border-radius: 5px;
+    border: 1px solid black;
+    border-bottom: none;
+    background-color: rebeccapurple;
+    color: white;
+}

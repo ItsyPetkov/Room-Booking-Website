@@ -1,0 +1,40 @@
+body{
+    padding-bottom: 2em;
+    min-height: 100%;
+    max-width: 650px;
+    margin: 2em auto;
+}
+
+.form{
+    border: solid 0.05em;
+    border-radius: 5px;
+}
+
+.header{
+    border: solid 0.05em black;
+    border-bottom: none;
+    border-radius: 5px;
+    text-align: center;
+    background: #5c84c4;
+    color: #e9cfd3;
+}
+
+p{
+    text-align: center;
+}
+
+.email, .password{
+    font-size: 16px;
+    text-align: center;
+}
+
+.button{
+    text-align: center;
+}
+
+.page-header{
+    border-bottom: 2px solid gray;
+}
+h1{
+    text-align: center;
+}
