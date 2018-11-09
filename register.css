@@ -3,6 +3,7 @@ body{
     min-height: 100%;
     max-width: 650px;
     margin: 2em auto;
+    text-align: center;
 }
 
 .form{
@@ -23,7 +24,7 @@ p{
     text-align: center;
 }
 
-.email, .password{
+.email, .password, .name, .institution{
     font-size: 16px;
     text-align: center;
 }
