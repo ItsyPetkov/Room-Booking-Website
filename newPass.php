@@ -40,43 +40,50 @@
          * Time: 6:03 PM
          */
 
+
         if(isset($_POST['change'])){
-            $email = $_POST['email'];
-            $oldpassword = $_POST['oldPass'];
-            $newpassword = $_POST['newPass'];
-            $encPass = md5($oldpassword);
-
-            //Connect to the Database
-            $serverName = "devweb2018.cis.strath.ac.uk";
-            $userName = "cs312groupk";
-            $password = "aeCh1ang9ahm";
-            $dbname = $userName;
-            $conn = new mysqli($serverName, $userName, $password, $dbname);
-            if($conn->connect_error){
-                die("Failed to connect to database");
+            if(empty($_POST['newPass']) || preg_match('/\s/', $_POST['newPass']))
+            {
+                echo "No spaces allowed in new password!";
             }
+            else
+            {
+                $email = $_POST['email'];
+                $oldpassword = $_POST['oldPass'];
+                $newpassword = $_POST['newPass'];
+                $encPass = md5($oldpassword);
 
-            $sql = "SELECT * FROM `cs312groupk`.`users` WHERE `email` = '$email' AND `password` = '$encPass'";
-            if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                $result = $conn->query($sql);
+                //Connect to the Database
+                $serverName = "devweb2018.cis.strath.ac.uk";
+                $userName = "cs312groupk";
+                $password = "aeCh1ang9ahm";
+                $dbname = $userName;
+                $conn = new mysqli($serverName, $userName, $password, $dbname);
+                if($conn->connect_error){
+                    die("Failed to connect to database");
+                }
 
-                if(mysqli_num_rows($result) == 1){
-                    $newEncryptedPassword = md5($newpassword);
-                    $sql2 = "UPDATE `cs312groupk`.`users` SET `password` = '$newEncryptedPassword' WHERE `email` = '$email'";
-                    $result2 = $conn->query($sql2);
-                    if($result2){
-                        echo "Password reset successful</br>";
-                        echo "To go back to the Login page please click <a href='login.php'> here </a>";
+                $sql = "SELECT * FROM `cs312groupk`.`users` WHERE `email` = '$email' AND `password` = '$encPass'";
+                if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                    $result = $conn->query($sql);
+
+                    if(mysqli_num_rows($result) == 1){
+                        $newEncryptedPassword = md5($newpassword);
+                        $sql2 = "UPDATE `cs312groupk`.`users` SET `password` = '$newEncryptedPassword' WHERE `email` = '$email'";
+                        $result2 = $conn->query($sql2);
+                        if($result2){
+                            echo "Password reset successful</br>";
+                            echo "To go back to the Login page please click <a href='login.php'> here </a>";
+                        }else{
+                            echo "Password reset failed, please try again!";
+                        }
                     }else{
-                        echo "Password reset failed, please try again!";
+                        echo "Unknown email, please try again.";
                     }
                 }else{
-                    echo "Unknown email, please try again.";
+                    echo "Invalid email please try again";
                 }
-            }else{
-                echo "Invalid email please try again";
             }
-
         }
         ?>
     </div>

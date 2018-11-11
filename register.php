@@ -50,35 +50,42 @@
     session_start();
 
     if(isset($_POST['Register'])){
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $institute = $_POST['institute'];
-        $encryptedPassword = md5($password);
-
-        //Connect to the Database
-        $serverName = "devweb2018.cis.strath.ac.uk";
-        $userName = "cs312groupk";
-        $password = "aeCh1ang9ahm";
-        $dbname = $userName;
-        $conn = new mysqli($serverName, $userName, $password, $dbname);
-        if($conn->connect_error){
-            die("Fialed to connect to database");
+        if(empty($_POST['password']) || preg_match('/\s/', $_POST['password']))
+        {
+            echo "No spaces allowed in new password!";
         }
+        else {
 
-        $sql = "SELECT * FROM `cs312groupk`.`users` WHERE `email` = '$email'";
-        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-            $result = $conn->query($sql);
-            if(mysqli_num_rows($result) == 1){
-                echo "User already exists";
-            }else{
-                $sql2 = "INSERT INTO `cs312groupk`.`users` (`name`,`password`,`email`,`id`,`institute`) VALUES ('$name', '$encryptedPassword', '$email', NULL, '$institute');";
-                $result2 = $conn->query($sql2);
-                $_SESSION['email'] = $email;
-                header("Location: mainPage.php");
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $institute = $_POST['institute'];
+            $encryptedPassword = md5($password);
+
+            //Connect to the Database
+            $serverName = "devweb2018.cis.strath.ac.uk";
+            $userName = "cs312groupk";
+            $password = "aeCh1ang9ahm";
+            $dbname = $userName;
+            $conn = new mysqli($serverName, $userName, $password, $dbname);
+            if ($conn->connect_error) {
+                die("Fialed to connect to database");
             }
-        }else{
-            echo "Invalid email! Please enter a valid email";
+
+            $sql = "SELECT * FROM `cs312groupk`.`users` WHERE `email` = '$email'";
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $result = $conn->query($sql);
+                if (mysqli_num_rows($result) == 1) {
+                    echo "User already exists";
+                } else {
+                    $sql2 = "INSERT INTO `cs312groupk`.`users` (`name`,`password`,`email`,`id`,`institute`) VALUES ('$name', '$encryptedPassword', '$email', NULL, '$institute');";
+                    $result2 = $conn->query($sql2);
+                    $_SESSION['email'] = $email;
+                    header("Location: mainPage.php");
+                }
+            } else {
+                echo "Invalid email! Please enter a valid email";
+            }
         }
     }
     ?>
