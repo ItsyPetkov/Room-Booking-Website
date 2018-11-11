@@ -19,7 +19,7 @@
     </div>
     <form method="post" action="register.php">
         <div class = "name">
-            Name: <input type="text" name="name" placeholder="Please enter a name."  required/><br><br>
+            Name: <input type="text" name="name" placeholder="Please enter a name." value="<?php if(isset($_POST['Register'])){echo $_POST['name'];} ?>"  required/><br><br>
         </div>
         <div class = "email">
             Email: <input type="text" name="email" placeholder="Please enter an email." value="<?php if(isset($_POST['Register'])){echo $_POST['email'];} ?>" required/><br><br>
@@ -28,7 +28,7 @@
             Password: <input type="password" name="password" placeholder="Please enter a password" value="<?php if(isset($_POST['Register'])){echo $_POST['password'];} ?>" required/><br><br>
         </div>
         <div class = "institution">
-            Institution: <input type="text" name="institute" placeholder="Please enter a institute"  required/><br><br>
+            Institution: <input type="text" name="institute" placeholder="Please enter a institute" value="<?php if(isset($_POST['Register'])){echo $_POST['institute'];} ?>" required/><br><br>
         </div>
         <div class="button">
             <input type="submit" name="Register" value="Register"/><br><br>

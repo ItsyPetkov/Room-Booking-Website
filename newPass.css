@@ -25,7 +25,8 @@ h1{
     text-align: center;
 }
 
-.email, .password{
+
+.email, .newPass, .oldPass{
     font-size: 16px;
     text-align: center;
 }
