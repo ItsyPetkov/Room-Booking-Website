@@ -25,7 +25,8 @@
 
     // Issue the query
     $user = $_POST["user"];
-    $sql = "SELECT * FROM `bookings` WHERE 'booked_by' = $user";
+    $sql = "SELECT * FROM `bookings` WHERE 'user_id' = $user";
+    //$sql = "SELECT * FROM `bookings` WHERE 1";
     $result = $conn->query($sql);
 
     if (!$result)
@@ -38,7 +39,6 @@
     { ?>
     <table>
         <tr>
-            <th></th>
             <th>Room Number</th>
             <th>Institute</th>
             <th>Purpose</th>
@@ -49,7 +49,7 @@
         // Filling the table
         while ($row = $result->fetch_assoc()) {
             echo "<tr>\n";
-            echo "<td>" . $row["roomNumber"] . "</td>";
+            echo "<td>" . $row["room_id"] . "</td>";
             echo "<td>" . $row["institution"] . "</td>";
             echo "<td>" . $row["meeting_name"] . "</td>";
             echo "<td>" . $row["start_time"] . " - " . $row["end_time"] . "</td>";
