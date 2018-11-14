@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width-device-width, initial-scale-1.0">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="register.css"/>
     <title>Registration Page</title>
 </head>
 <body>
+<?php //include("includes/header.php"); ?>
 <div class="page-header">
     <h1>Welcome to our website</h1>
 </div>
@@ -17,27 +18,57 @@
         <h1>Registration Details</h1>
         <p>In order to create an account, please fill in the following</p>
     </div>
-    <form method="post" action="register.php">
-        <div class = "name">
-            Name: <input type="text" name="name" placeholder="Please enter a name." value="<?php if(isset($_POST['Register'])){echo $_POST['name'];} ?>"  required/><br><br>
+
+<form class="needs-validation" novalidate action="" method="post">
+    <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Name: </label>
+        <div class="col-md-6 mb-3">
+            <input type="text" class="form-control" name="name" id="name" placeholder="Please enter a name." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['name'];} ?>" required>
+            <div class="invalid-feedback">
+                Please, enter a name.
+            </div>
         </div>
-        <div class = "email">
-            Email: <input type="text" name="email" placeholder="Please enter an email." value="<?php if(isset($_POST['Register'])){echo $_POST['email'];} ?>" required/><br><br>
+    </div>
+
+    <div class="form-group row">
+        <label for="email" class="col-sm-2 col-form-label">E-Mail: </label>
+        <div class="col-md-6 mb-3">
+            <input type="text" class="form-control" name="email" id="email" placeholder="Please enter an email." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['email'];} ?>" required>
+            <div class="invalid-feedback">
+                Please, enter an email.
+            </div>
         </div>
-        <div class = "password">
-            Password: <input type="password" name="password" placeholder="Please enter a password" value="<?php if(isset($_POST['Register'])){echo $_POST['password'];} ?>" required/><br><br>
+    </div>
+
+    <div class="form-group row">
+        <label for="password" class="col-sm-2 col-form-label">Passowrd: </label>
+        <div class="col-md-6 mb-3">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Please enter a password." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['password'];} ?>" required>
+            <div class="invalid-feedback">
+                Please, enter a password.
+            </div>
         </div>
-        <div class = "institution">
-            Institution: <input type="text" name="institute" placeholder="Please enter a institute" value="<?php if(isset($_POST['Register'])){echo $_POST['institute'];} ?>" required/><br><br>
+    </div>
+
+    <div class="form-group row">
+        <label for="institute" class="col-sm-2 col-form-label">Institure: </label>
+        <div class="col-md-6 mb-3">
+            <input type="text" class="form-control" name="institute" id="institute" placeholder="Please enter an institute." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['institute'];} ?>" required>
+            <div class="invalid-feedback">
+                Please, enter an institute.
+            </div>
         </div>
-        <div class="button">
-            <input type="submit" name="Register" value="Register"/><br><br>
-        </div>
-        <p>
-            Already registered? <a href="login.php">Login here</a>
-        </p>
-    </form>
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary" name="Register">Submit</button>
+
+    <p>
+        Already registered? <a href="login.php">Login here</a>
+    </p>
+
+</form>
 </div>
+
 <div>
     <?php
     /**
@@ -55,31 +86,25 @@
             echo "No spaces allowed in new password!";
         }
         else {
+            include("includes/config.php");
+            include("includes/db.php");
 
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $institute = $_POST['institute'];
+            $name = mysqli_real_escape_string($db, $_POST['name']);
+            $email = mysqli_real_escape_string($db, $_POST['email']);
+            $password = mysqli_real_escape_string($db, $_POST['password']);
+            $institute = mysqli_real_escape_string($db, $_POST['institute']);
             $encryptedPassword = md5($password);
 
-            //Connect to the Database
-            $serverName = "devweb2018.cis.strath.ac.uk";
-            $userName = "cs312groupk";
-            $password = "aeCh1ang9ahm";
-            $dbname = $userName;
-            $conn = new mysqli($serverName, $userName, $password, $dbname);
-            if ($conn->connect_error) {
-                die("Fialed to connect to database");
-            }
+
 
             $sql = "SELECT * FROM `cs312groupk`.`users` WHERE `email` = '$email'";
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $result = $conn->query($sql);
+                $result = $db->query($sql);
                 if (mysqli_num_rows($result) == 1) {
                     echo "User already exists";
                 } else {
                     $sql2 = "INSERT INTO `cs312groupk`.`users` (`name`,`password`,`email`,`id`,`institute`) VALUES ('$name', '$encryptedPassword', '$email', NULL, '$institute');";
-                    $result2 = $conn->query($sql2);
+                    $result2 = $db->query($sql2);
                     $_SESSION['email'] = $email;
                     header("Location: mainPage.php");
                 }
@@ -90,7 +115,62 @@
     }
     ?>
 </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    // Enables only numeric input
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+    // Function for changing the tabs from the form step wizard
+    function selectStep(evt, tabName, flag) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("nav-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+
+        if (evt.currentTarget.type == "button") {
+            tablinks = document.getElementsByClassName(tabName);
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className += " active";
+            }
+        } else {
+            evt.currentTarget.className += " active";
+        }
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
 </body>
 </html>

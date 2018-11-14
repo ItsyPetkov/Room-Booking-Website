@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width-device-width, initial-scale-1.0">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="login.css"/>
     <title>Log in Authentication Page</title>
 </head>
@@ -17,37 +17,42 @@
         <h1>Login Details</h1>
         <p>In order to login to your account, please fill in the following</p>
     </div>
-
-    <form method="post" action="login.php">
-        <div class = "email">
-            Email: <input type="text" name="email" placeholder="Please enter an email." value="<?php if(isset($_POST['LogIn'])){echo $_POST['email'];} ?>" required/><br><br>
+    <form class="needs-validation" novalidate action="" method="post">
+        <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label">E-Mail: </label>
+            <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" name="email" id="email" placeholder="Please enter an email." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['email'];} ?>" required>
+                <div class="invalid-feedback">
+                    Please, enter an email.
+                </div>
+            </div>
         </div>
-        <div class = "password">
-            Password: <input type="password" name="password" placeholder="Please enter a password" value="<?php if(isset($_POST['LogIn'])){echo $_POST['password'];} ?>" required/><br><br>
+
+        <div class="form-group row">
+            <label for="password" class="col-sm-2 col-form-label">Passowrd: </label>
+            <div class="col-md-6 mb-3">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Please enter a password." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['password'];} ?>" required>
+                <div class="invalid-feedback">
+                    Please, enter a password.
+                </div>
+            </div>
         </div>
         <div class = "button">
-            <input type="submit" name="LogIn" value="Log In"/>
+            <button type="submit" class="btn btn-outline-primary" name="LogIn">Log In</button>
         </div>
-        <p>
-<!--            <a href="#" class="btn btn-link btn-sm" role="button" name="pwdreset">Don't remember your password?</a>-->
-            <input type="submit" name="pwdreset" value="Reset Pass">
-        </p>
-        <p>
-            Don't have an account? <a href="register.php">Register Now</a>
-        </p>
-        <p>
-            Don't like your password? <a href="newPass.php">Reset Password</a>
-        </p>
     </form>
 </div>
+<div>
+    <?php
+    //Connect to the database
+    $host = "devweb2018.cis.strath.ac.uk";
+    $user = "cs312groupk";
+    $password = "aeCh1ang9ahm";
+    $dbname = "cs312groupk";
+    $conn = new mysqli($host, $user, $password, $dbname);
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</body>
-</html>
-<?php
-    $email = isset($_POST["email"])? $_POST["email"]: "";
-    $pwd = isset($_POST["password"])? $_POST["password"]: "";
+    $email = isset($_POST["email"])? mysqli_real_escape_string($conn, $_POST["email"]): "";
+    $pwd = isset($_POST["password"])? mysqli_real_escape_string($conn, $_POST["password"]): "";
     $invalidinfo = 0;
 
     if(empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL))
@@ -62,12 +67,7 @@
 
     if($invalidinfo === 0)
     {
-        //Connect to the database
-        $host = "devweb2018.cis.strath.ac.uk";
-        $user = "cs312groupk";
-        $password = "aeCh1ang9ahm";
-        $dbname = "cs312groupk";
-        $conn = new mysqli($host, $user, $password, $dbname);
+
 
         if(isset($_POST['LogIn'])) {
             $encryptedPassword = md5($pwd);
@@ -75,7 +75,7 @@
             $result = $conn->query($sql);
 
             if(mysqli_num_rows($result) == 1){
-               $_SESSION['email'] = $email;
+                $_SESSION['email'] = $email;
                 header("Location: mainPage.php");
             }else{
                 echo "Wrong email or password.";
@@ -127,4 +127,64 @@
 
 
     }
-?>
+    ?>
+</div>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    // Enables only numeric input
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+    // Function for changing the tabs from the form step wizard
+    function selectStep(evt, tabName, flag) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("nav-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+
+        if (evt.currentTarget.type == "button") {
+            tablinks = document.getElementsByClassName(tabName);
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className += " active";
+            }
+        } else {
+            evt.currentTarget.className += " active";
+        }
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
+</body>
+</html>

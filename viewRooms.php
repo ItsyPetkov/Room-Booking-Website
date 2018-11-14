@@ -16,20 +16,20 @@
     $user = "cs312groupk";
     $pass = "aeCh1ang9ahm";
     $dbname = "cs312groupk";
-    $conn = new mysqli($host, $user, $pass, $dbname);
+    $db = new mysqli($host, $user, $pass, $dbname);
 
-    if ($conn->connect_error)
+    if ($db->connect_error)
     {
-        die("Connection failed : ".$conn->connect_error); // Remove once working!!!
+        die("Connection failed : ".$db->connect_error); // Remove once working!!!
     }
 
     // Issue the query
     $sql = "SELECT * FROM `rooms` WHERE 1";
-    $result = $conn->query($sql);
+    $result = $db->query($sql);
 
     if (!$result)
     {
-        die("Query failed".$conn->error); // Remove once working!!!
+        die("Query failed".$db->error); // Remove once working!!!
     }
 
     // Handling the result
@@ -59,7 +59,7 @@
             echo "</tr>\n";
         }
         // Disconnect
-        $conn->close();
+        $db->close();
         } ?>
     </table>
 <br><div>A more stylish idea:</div><br>

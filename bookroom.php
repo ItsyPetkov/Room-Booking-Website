@@ -197,7 +197,7 @@
 						<button type="submit" class="btn btn-outline-primary" name="submitStep1">Next</button>
 						<?php } else { ?>
 						<button type="button" class="btn btn-outline-secondary" disabled>Previous</button>
-						<button type="button" class="btn btn-outline-primary" onclick="selectStep(event, 'formStep2')">Next</a>
+						<button type="button" class="btn btn-outline-primary" onclick="selectStep(event, 'formStep2')">Next</button>
 						<?php } ?>
 					</form>
 				</div>

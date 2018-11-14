@@ -4,10 +4,11 @@ body{
     max-width: 650px;
     margin: 2em auto;
     text-align: center;
+
 }
 
 .form{
-    border: solid 0.05em;
+    border: solid black 0.05em;
     border-radius: 5px;
 }
 
