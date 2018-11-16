@@ -105,8 +105,16 @@
                 } else {
                     $sql2 = "INSERT INTO `cs312groupk`.`users` (`name`,`password`,`email`,`id`,`institute`) VALUES ('$name', '$encryptedPassword', '$email', NULL, '$institute');";
                     $result2 = $db->query($sql2);
-                    $_SESSION['email'] = $email;
-                    header("Location: mainPage.php");
+                    if(empty($institute)){
+                        $_SESSION['name'] = $name;
+                        $_SESSION['email'] = $email;
+                        header("Location: userhome.php");
+                    }else{
+                        $_SESSION['name'] = $name;
+                        $_SESSION['email'] = $email;
+                        header("Location: ownerhome.php");
+                    }
+
                 }
             } else {
                 echo "Invalid email! Please enter a valid email";

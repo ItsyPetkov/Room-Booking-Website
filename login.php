@@ -44,6 +44,9 @@
 </div>
 <div>
     <?php
+
+    session_start();
+
     //Connect to the database
     $host = "devweb2018.cis.strath.ac.uk";
     $user = "cs312groupk";
@@ -69,15 +72,45 @@
     {
 
 
-        if(isset($_POST['LogIn'])) {
+        if(isset($_POST['LogIn']))
+        {
             $encryptedPassword = md5($pwd);
             $sql = "SELECT * FROM `cs312groupk`.`users` WHERE `email` = '$email' AND `password` = '$encryptedPassword'";
             $result = $conn->query($sql);
 
-            if(mysqli_num_rows($result) == 1){
-                $_SESSION['email'] = $email;
-                header("Location: mainPage.php");
-            }else{
+            if(mysqli_num_rows($result) == 1)
+            {
+                $sql2 = "SELECT * FROM users";
+                $result2 = $conn->query($sql2);
+                if($result2)
+                {
+                    if ($result2->num_rows > 0)
+                    {
+                        while ($row = $result2->fetch_assoc())
+                        {
+                            if($row["email"] === $email && $row['institute'] === null)
+                            {
+                                $_SESSION['id'] = $row['id'];
+                                $_SESSION['name'] = $row['name'];
+                                $_SESSION['email'] = $email;
+                                header("Location: userhome.php");
+                                break;
+                            }
+
+                            elseif($row["email"] === $email && $row['institute'] != null)
+                            {
+                                $_SESSION['id'] = $row['id'];
+                                $_SESSION['name'] = $row['name'];
+                                $_SESSION['email'] = $email;
+                                header("Location: onwerhome.php");
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
                 echo "Wrong email or password.";
             }
         }
