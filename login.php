@@ -102,7 +102,7 @@
                                 $_SESSION['id'] = $row['id'];
                                 $_SESSION['name'] = $row['name'];
                                 $_SESSION['email'] = $email;
-                                header("Location: onwerhome.php");
+                                header("Location: ownerhome.php");
                                 break;
                             }
                         }
