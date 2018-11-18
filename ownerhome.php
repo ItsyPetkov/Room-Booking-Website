@@ -59,7 +59,7 @@ if ($result->num_rows > 0) {
         echo "<td>" . $row["institute"] . "</td>";
         echo "<td>" . $row["capacity"] . "</td>";
         echo "<td>" . $row["hoursAvailableS"] . " - " . $row["hoursAvailableE"] . "</td>";
-        echo "<form action = 'removeRooms.php' method = 'post'>";
+        echo "<form action = 'removeRooms.php' value = ".$row["id"]." method = 'post'>";
         echo "<td><button name ='remove'  value=" . $row["id"] . "/>Remove Room</button></td></form>";
 
         echo "</tr>\n";

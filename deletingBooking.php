@@ -11,12 +11,12 @@ if ($conn->connect_error)
     die("Connection failed : ".$conn->connect_error); // Remove once working!!!
 }
 
-$chosenRoom = $_POST["confirm"];
+$chosenBooking = $_POST["confirm"];
 
-if($chosenRoom != "no")
+if($chosenBooking != "no")
 {
     // Issue the query
-    $sql = "SELECT * FROM `bookings` WHERE id = '$chosenRoom'";
+    $sql = "SELECT * FROM `bookings` WHERE id = '$chosenBooking'";
 }
 
 // Disconnect
