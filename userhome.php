@@ -83,4 +83,9 @@ $result2 = $db->query($sql2);
     $db->close();
 
     ?>
+    
+<?php
+echo "<form action = 'bookroom.php' method = 'post'>";
+echo "<button name ='book'/>Book a Room</button></form>";
+?>
 </body>
