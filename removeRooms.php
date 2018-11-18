@@ -5,10 +5,11 @@
     <h1>Title</h1>
 <body>
 <div>
-  Are you sure you want ot delete this room?
-    <form action="viewRooms.php" method="post">
-        <td><button type=\"submit\" name = \"orderButton\" value = yes>Yes</button></td>
-        <td><button type=\"submit\" name = \"orderButton\" value = no>No</button></td>
+  Are you sure you want to delete this room?
+    <form action="deletingRoom.php" method="post">
+        <?php $chosenRoom = $_POST["id"]; ?>
+        <td><button type=\"submit\" name = \"confirm\" value = <?php echo $chosenRoom; ?>>Yes</button></td>
+        <td><button type=\"submit\" name = \"confirm\" value = no>No</button></td>
 </div>
 </body>
 </html>
