@@ -66,8 +66,11 @@ $result2 = $db->query($sql2);
         echo "<td></td>";
         echo "<td>" . $row["meeting_name"] . "</td>";
         echo "<td>" . $row["start_time"] . " - " . $row["end_time"] . "</td>";
+        echo "<td>" . $row["meeting_date"] . "</td>";
         echo "<td>" . $row["institution"]  . "</td>";
         echo "<td>" . $roomno  . "</td>";
+        echo "<form action = 'removeBooking.php' method = 'post'>";
+        echo "<td><button name ='remove'  value=" . $row["id"] . "/>Remove Booking</button></td></form>";
 
         echo "</tr>\n";
     }
