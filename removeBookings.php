@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>View Rooms</title>
+    <title>Confirm deletion</title>
     <h1>Title</h1>
 <body>
 <div>
