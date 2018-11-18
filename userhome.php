@@ -1,3 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home </title>
+
+
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <?php include("includes/header.php");
+    session_start();
+    ?>
+    <h1>Home lmao </h1>
+<body>
+
 <?php
 /**
  * Created by IntelliJ IDEA.
@@ -5,17 +20,18 @@
  * Date: 14/11/2018
  * Time: 14:22
  */
-session_start();
+
 
 $id = $_SESSION['id'];
 $name = $_SESSION['name'];
 $email = $_SESSION['email'];
 
 
-
-
 include("includes/config.php");
 include("includes/db.php");
+
+echo"<h2> Current Booked Rooms</h2>";
+
 if ($db->connect_error) die("Connection failed: " . $db->connect_error);
 
 // Issue the query
@@ -64,3 +80,4 @@ $result2 = $db->query($sql2);
     $db->close();
 
     ?>
+</body>
