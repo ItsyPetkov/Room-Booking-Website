@@ -1,20 +1,20 @@
 <?php
-    /**
-     * Created by IntelliJ IDEA.
-     * User: rnb16141
-     * Date: 14/11/2018
-     * Time: 14:22
-     */
-    include("includes/config.php");
-    include("includes/db.php");
+/**
+ * Created by IntelliJ IDEA.
+ * User: rnb16141
+ * Date: 14/11/2018
+ * Time: 14:22
+ */
+include("includes/config.php");
+include("includes/db.php");
 
-    session_start();
+session_start();
 
-    $id = $_SESSION['id'];
-    $name = $_SESSION['name'];
-    $email = $_SESSION['email'];
+$id = $_SESSION['id'];
+$name = $_SESSION['name'];
+$email = $_SESSION['email'];
 
-    $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms r ON (r.id = b.room_id) WHERE b.user_id = '$id'");
+$result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms r ON (r.id = b.room_id) WHERE b.user_id = '$id'");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,38 +27,41 @@
     <title>Homepage</title>
 </head>
 <body>
-    <?php include("includes/header.php"); ?>
-    <div class="container">
-        <?php if($result->num_rows == 0) { ?>
-            <div class="alert alert-primary" role="alert">
-                You haven't made any bookings yet.
-            </div>
-        <?php } else { ?>
+<?php include("includes/header.php"); ?>
+<div class="container">
+    <?php if($result->num_rows == 0) { ?>
+        <div class="alert alert-primary" role="alert">
+            You haven't made any bookings yet.
+        </div>
+    <?php } else { ?>
         <table class="table">
             <thead>
-                <tr>
-                    <th>Meeting Name</th>
-                    <th>Time</th>
-                    <th>Date</th>
-                    <th>Institution</th>
-                    <th>Room No.</th>
-                </tr>
+            <tr>
+                <th>Meeting Name</th>
+                <th>Time</th>
+                <th>Date</th>
+                <th>Institution</th>
+                <th>Room No.</th>
+            </tr>
             </thead>
             <tbody>
-                <?php while ($row = $result->fetch_assoc()) { ?>
-                    <tr>
-                        <td><?php echo $row["meeting_name"]; ?></td>
-                        <td><?php echo $row["start_time"]." - ".$row["send_time"]; ?></td>
-                        <td><?php echo $row["meeting_date"]; ?></td>
-                        <td><?php echo $row["institution"]; ?></td>
-                        <td><?php echo $row["roomNumber"]; ?></td>
-                    </tr>
-                <?php } ?>
+            <?php while ($row = $result->fetch_assoc()) { ?>
+                <tr>
+                    <td><?php echo $row["meeting_name"]; ?></td>
+                    <td><?php echo $row["start_time"]." - ".$row["end_time"]; ?></td>
+                    <td><?php echo $row["meeting_date"]; ?></td>
+                    <td><?php echo $row["institution"]; ?></td>
+                    <td><?php echo $row["roomNumber"]; ?></td>
+                    <form action = 'removeBooking.php' value = <?php echo $row["id"]; ?> method = 'post'>;
+                    <td><button name ='remove'  value=<?php echo $row["id"]; ?>/> Remove Room</button></td></form>;
+
+                </tr>
+            <?php } ?>
             </tbody>
         </table>
-        <?php } ?>
-    </div>
+    <?php } ?>
+</div>
 
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </body>
