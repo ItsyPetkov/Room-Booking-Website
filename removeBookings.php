@@ -7,8 +7,8 @@
 <div>
     Are you sure you want to delete this booking?
     <form method="post">
-        <?php $chosenBooking = 5; ?>
-        <td><button type="submit" name = "confirm" value = yes>Yes</button></td>
+        <?php $chosenBooking = $_POST["remove"]; ?>
+        <td><button type="submit" name = "confirm" value = <?php echo $chosenBooking; ?>>Yes</button></td>
         <td><button type="submit" name = "confirm" value = no>No</button></td>
 
         <?php
@@ -24,11 +24,18 @@
             die("Connection failed : ".$conn->connect_error); // Remove once working!!!
         }
 
-        $confirmed = $_POST["confirm"];
-        if($confirmed === "yes")
+        $confirmed = 0;
+        if (isset($_POST["confirm"]))
+        {
+            $confirmed = $_POST["confirm"];
+        }
+
+        // For some reason it doesn't enter into this loop when the page is first opened and idk why. Works as intended though
+        // Will only delete row if "confirmed" is equal to the id of the row we want to delete
+        if($confirmed != "no" && $confirmed != null)
         {
             // Issue the query
-            //$sql = "DELETE * FROM `bookings` WHERE id = '$confirmed'";
+            //$sql = "DELETE FROM `bookings` WHERE id = '$confirmed'";
             echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
         }
 

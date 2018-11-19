@@ -7,8 +7,8 @@
 <div>
     Are you sure you want to delete this room?
     <form method="post">
-        <?php $chosenBooking = $_POST["remove"]; ?>
-        <td><button type="submit" name = "confirm" value = <?php echo $chosenBooking; ?>>Yes</button></td>
+        <?php $chosenRoom = $_POST["remove"]; ?>
+        <td><button type="submit" name = "confirm" value = <?php echo $chosenRoom; ?>>Yes</button></td>
         <td><button type="submit" name = "confirm" value = no>No</button></td>
 
         <?php
