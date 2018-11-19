@@ -1,91 +1,64 @@
+<?php
+    /**
+     * Created by IntelliJ IDEA.
+     * User: rnb16141
+     * Date: 14/11/2018
+     * Time: 14:22
+     */
+    include("includes/config.php");
+    include("includes/db.php");
+
+    session_start();
+
+    $id = $_SESSION['id'];
+    $name = $_SESSION['name'];
+    $email = $_SESSION['email'];
+
+    $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms r ON (r.id = b.room_id) WHERE b.user_id = '$id'");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Home </title>
-
-
-
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <?php include("includes/header.php");
-    session_start();
-    ?>
-    <h1>Home lmao </h1>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Homepage</title>
+</head>
 <body>
+    <?php include("includes/header.php"); ?>
+    <div class="container">
+        <?php if($result->num_rows == 0) { ?>
+            <div class="alert alert-primary" role="alert">
+                You haven't made any bookings yet.
+            </div>
+        <?php } else { ?>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Meeting Name</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th>Institution</th>
+                    <th>Room No.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?php echo $row["meeting_name"]; ?></td>
+                        <td><?php echo $row["start_time"]." - ".$row["send_time"]; ?></td>
+                        <td><?php echo $row["meeting_date"]; ?></td>
+                        <td><?php echo $row["institution"]; ?></td>
+                        <td><?php echo $row["roomNumber"]; ?></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+        <?php } ?>
+    </div>
 
-<?php
-/**
- * Created by IntelliJ IDEA.
- * User: rnb16141
- * Date: 14/11/2018
- * Time: 14:22
- */
-
-
-$id = $_SESSION['id'];
-$name = $_SESSION['name'];
-$email = $_SESSION['email'];
-
-
-include("includes/config.php");
-include("includes/db.php");
-
-echo"<h2> Current Booked Rooms</h2>";
-
-if ($db->connect_error) die("Connection failed: " . $db->connect_error);
-
-// Issue the query
-$sql = "SELECT * FROM `bookings` WHERE `bookings`.`user_id` = '$id'";
-$result = $db->query($sql);
-
-
-if ($result->num_rows > 0) {
-
-
-    echo "
-    <table>
-        <tr>
-            <th></th>
-            <th>Meeting Name</th>
-            <th>Time</th>
-            <th>Date</th>
-            <th>Institution</th>
-            <th>Room No.</th>
-        </tr>
-  ";
-    // Filling the table
-    while ($row = $result->fetch_assoc()) {
-
-$sql2 = "SELECT * FROM `rooms` WHERE `id` = '".$row["room_id"]."'";
-$result2 = $db->query($sql2);
-        while ($row2 = $result2->fetch_assoc()) {
-            $roomno = $row2["roomNumber"];
-        }
-
-        echo "<tr>\n";
-        echo "<td></td>";
-        echo "<td>" . $row["meeting_name"] . "</td>";
-        echo "<td>" . $row["start_time"] . " - " . $row["end_time"] . "</td>";
-        echo "<td>" . $row["meeting_date"] . "</td>";
-        echo "<td>" . $row["institution"]  . "</td>";
-        echo "<td>" . $roomno  . "</td>";
-        echo "<form action = 'removeBooking.php' method = 'post'>";
-        echo "<td><button name ='remove'  value=" . $row["id"] . "/>Remove Booking</button></td></form>";
-
-        echo "</tr>\n";
-    }
-    }
-    else {
-        echo "if youre seeing this the associated user ID doesnt have any current booking that match it, add some via phpmyadmin until theres more fucntionality lol, also if theres 3 errors up top it means that the session thing is confused. either manually set the varaibles in the code or navigate to this through the login/register pages with no institute";
-
-}
-    // Disconnect
-    $db->close();
-
-    ?>
-    
-<?php
-echo "<form action = 'bookroom.php' method = 'post'>";
-echo "<button name ='book'/>Book a Room</button></form>";
-?>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </body>

@@ -1,15 +1,26 @@
-<?php 
+<?php
+    /**
+     * Created by IntelliJ IDEA.
+     * User: gfb16165
+     * Date: 18/11/2018
+     * Time: 22:11
+     */
+    include("includes/config.php");
+    include("includes/db.php");
 
-	include("includes/config.php");
-	include("includes/db.php");
+    session_start();
+
+    $id = $_SESSION['id'];
+    $name = $_SESSION['name'];
+    $email = $_SESSION['email'];
 	
 	$formStep = 1;
 	$booked = false;
-	$name = $time = $date = $location = $capacity = $choice = $room = "";
+	$meeting_name = $time = $date = $location = $capacity = $choice = $room = "";
 	$extras = [];
 	
 	if(isset($_POST["submitStep1"])) {
-		$name = mysqli_real_escape_string($db, $_POST["name"]);
+		$meeting_name = mysqli_real_escape_string($db, $_POST["name"]);
 		$time = mysqli_real_escape_string($db, $_POST["time"]);
 		$date = mysqli_real_escape_string($db, $_POST["date"]);
 		$location = mysqli_real_escape_string($db, $_POST["location"]);
@@ -22,7 +33,7 @@
 		// show best matches in step two
 	}
 	if(isset($_POST["submitStep2"])) {
-		$name = mysqli_real_escape_string($db, $_POST["name"]);
+		$meeting_name = mysqli_real_escape_string($db, $_POST["name"]);
 		$time = mysqli_real_escape_string($db, $_POST["time"]);
 		$date = mysqli_real_escape_string($db, $_POST["date"]);
 		$location = mysqli_real_escape_string($db, $_POST["location"]);
@@ -35,7 +46,7 @@
 		$formStep = 3;
 	}
 	if(isset($_POST["submitStep3"])) {
-		$name = mysqli_real_escape_string($db, $_POST["name"]);
+		$meeting_name = mysqli_real_escape_string($db, $_POST["name"]);
 		$time = mysqli_real_escape_string($db, $_POST["time"]);
 		$date = mysqli_real_escape_string($db, $_POST["date"]);
 		$location = mysqli_real_escape_string($db, $_POST["location"]);

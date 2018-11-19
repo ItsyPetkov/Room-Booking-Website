@@ -1,35 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand" href="#">Navbar</a>
+	<a class="navbar-brand" href="#">Name of the system</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
 	
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
+            <?php if(strpos($_SERVER['REQUEST_URI'], "userhome.php")) { ?>
 			<li class="nav-item active">
-				<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="#">My bookings <span class="sr-only">(current)</span></a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Link</a>
-			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Dropdown
-				</a>
-			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a class="dropdown-item" href="#">Action</a>
-				<a class="dropdown-item" href="#">Another action</a>
-				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="#">Something else here</a>
-			</div>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link disabled" href="#">Disabled</a>
-			</li>
+            <li class="nav-item">
+                <a class="nav-link" href="bookroom.php">Book a room</a>
+            </li>
+            <?php } else { ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="userhome.php">My bookings</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Book a room <span class="sr-only">(current)</span></a>
+                </li>
+            <?php } ?>
 		</ul>
 		<span class="navbar-text">
-			Hi, user.name
+			Hi, <?php echo $name; ?>
 		</span>
-		<a class="btn btn-outline-secondary my-2 my-sm-0" href="#">Log out</a>
+		<a class="btn btn-outline-secondary my-2 my-sm-0" href="logout.php">Log out</a>
 	</div>
 </nav>

@@ -1,3 +1,95 @@
+<?php
+include("includes/config.php");
+include("includes/db.php");
+
+session_start();
+
+$email = $pwd = $wrong_acc_info = "";
+
+if(isset($_POST['LogIn'])) {
+    $is_correct_email = $is_correct_pwd = false;
+
+    $pwd = isset($_POST["password"])? mysqli_real_escape_string($db, $_POST["password"]): "";
+
+    if(empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $is_correct_email = true;
+    }
+    if (empty($_POST["email"])) {
+        //$email_err = "Email is required!";
+    } else {
+        $email = mysqli_real_escape_string($db, $_POST["email"]);
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $is_correct_email = true;
+        } else {
+            $email = "";
+            //$email_err = "Invalid email!";
+        }
+    }
+    if(!empty($pwd)) {
+        $is_correct_pwd = true;
+    }
+    if($is_correct_email && $is_correct_pwd) {
+        $encryptedPassword = md5($pwd);
+        $result = mysqli_query($db, "SELECT * FROM `cs312groupk`.`users` WHERE `email` = '$email' AND `password` = '$encryptedPassword'");
+
+        if($result->num_rows == 1) {
+            while ($row = $result->fetch_assoc()) {
+                $_SESSION['id'] = $row['id'];
+                $_SESSION['name'] = $row['name'];
+                $_SESSION['email'] = $email;
+                if ($row['institute'] == null) {
+                    $_SESSION['user-type'] = 'normal';
+                    header("location:userhome.php");
+                } else {
+                    $_SESSION['user-type'] = 'owner';
+                    header("location:ownerhome.php");
+                }
+            }
+        } else {
+            $wrong_acc_info = "Wrong email or password!";
+        }
+    }
+}
+
+/*if($invalidinfo === 0) {
+
+    if(isset($_POST["pwdreset"])) {
+        $email_found = 0;
+        $sql = "SELECT * FROM users";
+        $result = $db->query($sql);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                if($row["email"] === $email) {
+                    $email_found = 1;
+                    break;
+                }
+            }
+        }
+
+        if($email_found === 1) {
+            $newpwd = rand();
+            $new_encr_pwd = md5($newpwd);
+            $message = "Your new password is $newpwd";
+            mail($email, "Password Reset - Group K's Website", $message);
+            $sql = "UPDATE users SET password = '$new_encr_pwd' WHERE email = '$email'";
+
+            if ($db->query($sql) === TRUE) {
+                echo "<div>Password updated successfully!</div>";
+                echo "<div>Your new password has been sent to: $email</div>";
+            } else {
+                echo "<div>Error updating record: " . $db->error . "</div>";
+            }
+        }
+
+        else {
+            echo "<div>No such email found</div>";
+        }
+    }
+
+
+}*/
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,159 +101,51 @@
     <title>Log in Authentication Page</title>
 </head>
 <body>
-<div class="page-header">
-    <h1>Welcome to our website</h1>
-</div>
-<div class="form">
-    <div class="header">
-        <h1>Login Details</h1>
-        <p>In order to login to your account, please fill in the following</p>
+
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-12">
+                <div class="header">
+                    <h1>Login to our website</h1>
+                    <p>In order to login to your account, please fill in the following</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form class="needs-validation" novalidate action="" method="post">
+                    <div class="form-group row">
+                        <div class="col-md-4 offset-md-4 mb-3">
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Email address" autocomplete="off" value="<?php echo $email; ?>" required>
+                            <div class="invalid-feedback">Please, enter an email!</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-4 offset-md-4 mb-3">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['password'];} ?>" required>
+                            <div class="invalid-feedback">Please, enter a password!</div>
+                        </div>
+                    </div>
+                    <div class="button">
+                        <button type="submit" class="btn btn-outline-primary" name="LogIn">Log In</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>Don't have an account? <a href="register.php">Register here</a></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p class="error"><?php echo $wrong_acc_info; ?></p>
+            </div>
+        </div>
     </div>
-    <form class="needs-validation" novalidate action="" method="post">
-        <div class="form-group row">
-            <label for="email" class="col-sm-2 col-form-label">E-Mail: </label>
-            <div class="col-md-6 mb-3">
-                <input type="text" class="form-control" name="email" id="email" placeholder="Please enter an email." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['email'];} ?>" required>
-                <div class="invalid-feedback">
-                    Please, enter an email.
-                </div>
-            </div>
-        </div>
 
-        <div class="form-group row">
-            <label for="password" class="col-sm-2 col-form-label">Passowrd: </label>
-            <div class="col-md-6 mb-3">
-                <input type="password" class="form-control" name="password" id="password" placeholder="Please enter a password." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['password'];} ?>" required>
-                <div class="invalid-feedback">
-                    Please, enter a password.
-                </div>
-            </div>
-        </div>
-        <div class = "button">
-            <button type="submit" class="btn btn-outline-primary" name="LogIn">Log In</button>
-        </div>
-    </form>
-</div>
-<div>
-    <?php
-
-    session_start();
-
-    //Connect to the database
-    $host = "devweb2018.cis.strath.ac.uk";
-    $user = "cs312groupk";
-    $password = "aeCh1ang9ahm";
-    $dbname = "cs312groupk";
-    $conn = new mysqli($host, $user, $password, $dbname);
-
-    $email = isset($_POST["email"])? mysqli_real_escape_string($conn, $_POST["email"]): "";
-    $pwd = isset($_POST["password"])? mysqli_real_escape_string($conn, $_POST["password"]): "";
-    $invalidinfo = 0;
-
-    if(empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL))
-    {
-        $invalidinfo = 1;
-    }
-
-    if(empty($pwd) || preg_match('/\s/', $pwd))
-    {
-        $invalidinfo = 1;
-    }
-
-    if($invalidinfo === 0)
-    {
-
-
-        if(isset($_POST['LogIn']))
-        {
-            $encryptedPassword = md5($pwd);
-            $sql = "SELECT * FROM `cs312groupk`.`users` WHERE `email` = '$email' AND `password` = '$encryptedPassword'";
-            $result = $conn->query($sql);
-
-            if(mysqli_num_rows($result) == 1)
-            {
-                $sql2 = "SELECT * FROM users";
-                $result2 = $conn->query($sql2);
-                if($result2)
-                {
-                    if ($result2->num_rows > 0)
-                    {
-                        while ($row = $result2->fetch_assoc())
-                        {
-                            if($row["email"] === $email && $row['institute'] === null)
-                            {
-                                $_SESSION['id'] = $row['id'];
-                                $_SESSION['name'] = $row['name'];
-                                $_SESSION['email'] = $email;
-                                header("Location: userhome.php");
-                                break;
-                            }
-
-                            elseif($row["email"] === $email && $row['institute'] != null)
-                            {
-                                $_SESSION['id'] = $row['id'];
-                                $_SESSION['name'] = $row['name'];
-                                $_SESSION['email'] = $email;
-                                header("Location: ownerhome.php");
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                echo "Wrong email or password.";
-            }
-        }
-
-        if(isset($_POST["pwdreset"]))
-        {
-            $email_found = 0;
-            $sql = "SELECT * FROM users";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0)
-            {
-                while ($row = $result->fetch_assoc())
-                {
-                    if($row["email"] === $email)
-                    {
-                        $email_found = 1;
-                        break;
-                    }
-                }
-            }
-
-            if($email_found === 1)
-            {
-                $newpwd = rand();
-                $new_encr_pwd = md5($newpwd);
-                $message = "Your new password is $newpwd";
-                mail($email, "Password Reset - Group K's Website", $message);
-                $sql = "UPDATE users SET password = '$new_encr_pwd' WHERE email = '$email'";
-
-                if ($conn->query($sql) === TRUE)
-                {
-                    echo "<div>Password updated successfully!</div>";
-                    echo "<div>Your new password has been sent to: $email</div>";
-                }
-                else
-                {
-                    echo "<div>Error updating record: " . $conn->error . "</div>";
-                }
-            }
-
-            else
-            {
-                echo "<div>No such email found</div>";
-            }
-        }
-
-
-    }
-    ?>
-</div>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
