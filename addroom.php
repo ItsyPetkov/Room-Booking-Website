@@ -26,22 +26,6 @@
             </div>
         </div>
 
-        get buildings from database!!
-        <div class="form-group row">
-            <label for="location" class="col-sm-2 col-form-label">Location</label>
-            <div class="col-md-6 mb-3">
-                <select class="custom-select" id="location" name="location" required>
-                    <option value="">Choose the location</option>
-                    <option value="building1" <?php if($location == "building1") echo 'selected="selected"'; ?>>buildingOne</option>
-                    <option value="building2" <?php if($location == "building2") echo 'selected="selected"'; ?>>buildingTwo</option>
-                    <option value="building3" <?php if($location == "building3") echo 'selected="selected"'; ?>>buildingThree</option>
-                </select>
-                <div class="invalid-feedback">
-                    Please, choose a location!
-                </div>
-            </div>
-        </div>
-
 
 
         <div class="form-group row">

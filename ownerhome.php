@@ -7,7 +7,7 @@
 
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
-<?php include("includes/header.php");
+<?php
 session_start();
 ?>
 <h1>Home lmao </h1>
@@ -28,6 +28,8 @@ $inst = $_SESSION['inst'];
 
 include("includes/config.php");
 include("includes/db.php");
+    include("includes/header.php");
+
 if ($db->connect_error) die("Connection failed: " . $db->connect_error);
 
 
@@ -59,11 +61,10 @@ if ($result->num_rows > 0) {
         echo "<td>" . $row["institute"] . "</td>";
         echo "<td>" . $row["capacity"] . "</td>";
         echo "<td>" . $row["hoursAvailableS"] . " - " . $row["hoursAvailableE"] . "</td>";
-        echo "<form action = 'removeRooms.php' value = ".$row["id"]." method = 'post'>";
-        echo "<td><button name ='remove'  value=" . $row["id"] . "/>Remove Room</button></td></form>";
-
-        echo "</tr>\n";
-    }
+        echo "<form action = 'removeRooms.php' value = ".$row["id"]." method = 'post'>";?>
+        <td><a href="removeRooms.php?remove-room=<?php echo $row["id"]; ?>" class="btn btn-primary">Remove room</a></td>
+        <?php echo "</tr>\n";
+     }
 }
     else{
         echo "fuck aw here lads";

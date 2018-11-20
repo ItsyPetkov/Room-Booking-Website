@@ -16,42 +16,47 @@
 	
 	$formStep = 1;
 	$booked = false;
-	$meeting_name = $time = $date = $location = $capacity = $choice = $room = "";
-	$extras = [];
+	$meeting_name = $start_time = $end_time = $date = $location = $capacity = $choice = $room = "";
 	
 	if(isset($_POST["submitStep1"])) {
 		$meeting_name = mysqli_real_escape_string($db, $_POST["name"]);
-		$time = mysqli_real_escape_string($db, $_POST["time"]);
+        $start_time = mysqli_real_escape_string($db, $_POST["startTime"]);
+        $end_time = mysqli_real_escape_string($db, $_POST["endTime"]);
 		$date = mysqli_real_escape_string($db, $_POST["date"]);
 		$location = mysqli_real_escape_string($db, $_POST["location"]);
 		$capacity = mysqli_real_escape_string($db, $_POST["capacity"]);
-		$extras = $_POST["extras"];
 		
-		// PHP form from step 1 validation
-		// if valid --> query DB for matches
+		/* PHP form from step 1 validation */
+
+        // query DB for matches
+        $rooms_sql = mysqli_query($db, "SELECT * FROM rooms r LEFT JOIN bookings b ON (r.id = b.room_id) WHERE capacity >= '$capacity' AND institute = '$location'");
+
 		$formStep = 2;
-		// show best matches in step two
 	}
 	if(isset($_POST["submitStep2"])) {
 		$meeting_name = mysqli_real_escape_string($db, $_POST["name"]);
-		$time = mysqli_real_escape_string($db, $_POST["time"]);
+        $start_time = mysqli_real_escape_string($db, $_POST["startTime"]);
+        $end_time = mysqli_real_escape_string($db, $_POST["endTime"]);
 		$date = mysqli_real_escape_string($db, $_POST["date"]);
 		$location = mysqli_real_escape_string($db, $_POST["location"]);
 		$capacity = mysqli_real_escape_string($db, $_POST["capacity"]);
-		$extras = $_POST["extras"];
-		
-		$room = mysqli_real_escape_string($db, $_POST["roomRadio"]);
-		// PHP form from step 2 validation
+
+        $room = mysqli_real_escape_string($db, $_POST["roomRadio"]);
+
+        // query DB for matches
+        $rooms_sql = mysqli_query($db, "SELECT * FROM rooms r LEFT JOIN bookings b ON (r.id = b.room_id) WHERE capacity >= '$capacity' AND institute = '$location' AND hoursAvailableS <= '$start_time' AND hoursAvailableE  >= '$start_time' AND hoursAvailableS <= '$end_time' AND hoursAvailableE  >= '$end_time' AND hoursAvailableE");
+
+        // PHP form from step 2 validation
 		// if valid --> show summary of details for confirmation
 		$formStep = 3;
 	}
 	if(isset($_POST["submitStep3"])) {
 		$meeting_name = mysqli_real_escape_string($db, $_POST["name"]);
-		$time = mysqli_real_escape_string($db, $_POST["time"]);
+        $start_time = mysqli_real_escape_string($db, $_POST["startTime"]);
+        $end_time = mysqli_real_escape_string($db, $_POST["endTime"]);
 		$date = mysqli_real_escape_string($db, $_POST["date"]);
 		$location = mysqli_real_escape_string($db, $_POST["location"]);
 		$capacity = mysqli_real_escape_string($db, $_POST["capacity"]);
-		$extras = $_POST["extras"];
 		$room = mysqli_real_escape_string($db, $_POST["roomRadio"]);
 		// update DB
 		// send confirmation email with booking details
@@ -130,7 +135,7 @@
 						<div class="form-group row">
 							<label for="name" class="col-sm-2 col-form-label">Meeting name</label>
 							<div class="col-md-6 mb-3">
-								<input type="text" class="form-control" name="name" id="name" placeholder="Enter name of meeting" autocomplete="off" value="<?php echo $name; ?>" required>
+								<input type="text" class="form-control" name="name" id="name" placeholder="Enter name of meeting" autocomplete="off" value="<?php echo $meeting_name; ?>" required>
 								<div class="invalid-feedback">
 									Please, enter the name of the meeting!
 								</div>
@@ -138,35 +143,45 @@
 						</div>
 						
 						<div class="form-group row">
-							<label for="time" class="col-md-2 col-form-label">Time range</label>
-							<div class="col-md-4 mb-3">
+							<label for="time" class="col-md-2 col-form-label">Start time</label>
+							<div class="col-md-2 mb-3">
 								<div class="input-group clockpicker">
-									<input type="text" class="form-control" name="time" id="time" placeholder="00:00" pattern="(09|10|11|12|13|14|15|16):[0-5][0-9]" autocomplete="off" value="<?php echo $time; ?>" required>
+									<input type="text" class="form-control" name="startTime" id="startTime" placeholder="00:00" pattern="(09|10|11|12|13|14|15|16):[0-5][0-9]" autocomplete="off" value="<?php echo $start_time; ?>" required>
 									<div class="invalid-feedback">
-										Please, enter the time of the meeting (between 09:00 and 17:00)!
+										Please, enter the start time of the meeting (between 09:00 and 17:00)!
 									</div>
 								</div>
 							</div>
-							<label for="date" class="col-md-1 offset-md-1 col-form-label">Date</label>
-							<div class="col-md-4 mb-3">
-								<div class="input-group">
-									<input type="date" class="form-control" name="date" id="date" min="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d', strtotime(date("Y-m-d"). ' + 10 days')); ?>" value="<?php echo $date; ?>" required />
-									<div class="invalid-feedback">
-										Please, enter the date of the meeting!
-									</div>
-								</div>
-							</div>
+                            <label for="time" class="col-md-1 offset-md-1 col-form-label">End time</label>
+                            <div class="col-md-2 mb-3">
+                                <div class="input-group clockpicker">
+                                    <input type="text" class="form-control" name="endTime" id="time" placeholder="00:00" pattern="(09|10|11|12|13|14|15|16):[0-5][0-9]" autocomplete="off" value="<?php echo $end_time; ?>" required>
+                                    <div class="invalid-feedback">
+                                        Please, enter the end time of the meeting (between 09:00 and 17:00)!
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="date" class="col-md-1 col-form-label">Date</label>
+                            <div class="col-md-3 mb-3">
+                                <div class="input-group">
+                                    <input type="date" class="form-control" name="date" id="date" min="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d', strtotime(date("Y-m-d"). ' + 10 days')); ?>" value="<?php echo $date; ?>" required />
+                                    <div class="invalid-feedback">
+                                        Please, enter the date of the meeting!
+                                    </div>
+                                </div>
+                            </div>
 						</div>
-						
+
 						<div class="form-group row">
 							<label for="location" class="col-sm-2 col-form-label">Location</label>
 							<div class="col-md-6 mb-3">
 								<select class="custom-select" id="location" name="location" required>
 									<option value="">Choose the location</option>
-									<option value="building1" <?php if($location == "building1") echo 'selected="selected"'; ?>>buildingOne</option>
-									<option value="building2" <?php if($location == "building2") echo 'selected="selected"'; ?>>buildingTwo</option>
-									<option value="building3" <?php if($location == "building3") echo 'selected="selected"'; ?>>buildingThree</option>
-								</select>
+                                    <?php $institutes = mysqli_query($db, "SELECT * FROM users WHERE institute !=  ''");
+                                        while($row = $institutes->fetch_assoc()) { ?>
+                                        <option value="<?php echo $row['institute']; ?>" <?php if($location == $row['institute']) echo 'selected="selected"'; ?>><?php echo $row['institute']; ?></option>
+								    <?php } ?>
+                                </select>
 								<div class="invalid-feedback">
 									Please, choose a location!
 								</div>
@@ -179,26 +194,6 @@
 								<input type="number" class="form-control" name="capacity" id="capacity" placeholder="Enter room capacity" onkeypress="return isNumber(event)" min="1" max="500" value="<?php echo $capacity; ?>" required>
 								<div class="invalid-feedback">
 									Please, choose room capacity between 1 and 500!
-								</div>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<div class="row">
-								<label class="col-sm-2 col-form-label">Extras</label>
-								<div class="col-md-6 mb-3">
-									<div class="custom-control custom-checkbox mb-3">
-										<input type="checkbox" class="custom-control-input" name="extras[]" id="multimedia" value="multimedia" <?php if(isset($_POST['extras'])){if(in_array('multimedia', $_POST['extras'])) echo 'checked';} ?>>
-										<label class="custom-control-label" for="multimedia">Multimedia</label>
-									</div>
-									<div class="custom-control custom-checkbox mb-3">
-										<input type="checkbox" class="custom-control-input" name="extras[]" id="tv" value="tv" <?php if(isset($_POST['extras'])){if(in_array('tv', $_POST['extras'])) echo 'checked';} ?>>
-										<label class="custom-control-label" for="tv">TV</label>
-									</div>
-									<div class="custom-control custom-checkbox mb-3">
-										<input type="checkbox" class="custom-control-input" name="extras[]" id="camera" value="camera" <?php if(isset($_POST['extras'])){if(in_array('camera', $_POST['extras'])) echo 'checked';} ?>>
-										<label class="custom-control-label" for="camera">Camera</label>
-									</div>
 								</div>
 							</div>
 						</div>
@@ -219,60 +214,39 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th scope="col">#</th>
-									<th scope="col">First</th>
-									<th scope="col">Last</th>
-									<th scope="col">Handle</th>
-									<th scope="col"></th>
+									<th scope="col">Room Number</th>
+									<th scope="col">Building</th>
+									<th scope="col">Institute</th>
+									<th scope="col">Capacity</th>
+                                    <th scope="col"></th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-									<td>
-										<div class="custom-control custom-radio">
-											<input type="radio" id="roomRadio1" name="roomRadio" class="custom-control-input" value="room1" <?php if($room == "room1") echo 'checked'; ?> required>
-											<label class="custom-control-label" for="roomRadio1">Select option 1</label>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">2</th>
-									<td>Jacob</td>
-									<td>Thornton</td>
-									<td>@fat</td>
-									<td>
-										<div class="custom-control custom-radio">
-											<input type="radio" id="roomRadio2" name="roomRadio" class="custom-control-input" value="room2" <?php if($room == 'room2') echo 'checked'; ?> required>
-											<label class="custom-control-label" for="roomRadio2">Select option 2</label>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td colspan="2">Larry the Bird</td>
-									<td>@twitter</td>
-									<td>
-										<div class="custom-control custom-radio">
-											<input type="radio" id="roomRadio3" name="roomRadio" class="custom-control-input" value="room3" <?php if($room == "room3") echo 'checked'; ?> required>
-											<label class="custom-control-label" for="roomRadio3">Select option 3</label>
-											
-										</div>
-									</td>
-								</tr>
+                                <?php if($formStep == 2 || $formStep == 3) {
+                                    while($row = $rooms_sql->fetch_assoc()) { ?>
+                                        <tr>
+                                            <td><?php echo $row['roomNumber'] ?></td>
+                                            <td><?php echo $row['building'] ?></td>
+                                            <td><?php echo $row['institute'] ?></td>
+                                            <td><?php echo $row['capacity'] ?></td>
+                                            <td>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="<?php echo 'room'.$row['id']; ?>" name="roomRadio" class="custom-control-input" value="<?php echo $row['id']; ?>" <?php if($room == $row['id']) echo 'checked'; ?> required>
+                                                    <label class="custom-control-label" for="<?php echo 'room'.$row['id']; ?>">Select option</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php }
+                                } ?>
 							</tbody>
 						</table>
 						<input type="hidden" name="name" value="<?php echo $name; ?>">
-						<input type="hidden" name="time" value="<?php echo $time; ?>">
+						<input type="hidden" name="startTime" value="<?php echo $start_time; ?>">
+                        <input type="hidden" name="endTime" value="<?php echo $end_time; ?>">
 						<input type="hidden" name="date" value="<?php echo $date; ?>">
 						<input type="hidden" name="location" value="<?php echo $location; ?>">
 						<input type="hidden" name="capacity" value="<?php echo $capacity; ?>">
-						<?php foreach($extras as $extra) {
-							echo '<input type="hidden" name="extras[]" value="'. $extra. '">';
-						} ?>
+
 						<?php if($formStep == 2) { ?>
 						<button type="button" class="btn btn-outline-secondary" onclick="selectStep(event, 'formStep1')">Previous</button>
 						<button type="submit" class="btn btn-outline-primary" name="submitStep2">Next</button>
@@ -294,6 +268,12 @@
 								<td></td>
 								<td></td>
 							</tr>
+                            <tr>
+                                <th scope="row"><h6>Start time</h6></th>
+                                <td><?php echo $start_time; ?></td>
+                                <th scope="row"><h6>End time</h6></th>
+                                <td><?php echo $end_time; ?></td>
+                            </tr>
 							<tr>
 								<th scope="row"><h6>Date</h6></th>
 								<td><?php echo $date; ?></td>
@@ -301,36 +281,23 @@
 								<td><?php echo $location; ?></td>
 							</tr>
 							<tr>
-								<th scope="row"><h6>Time of meeting</h6></th>
-								<td><?php echo $time; ?></td>
 								<th scope="row"><h6>Room</h6></th>
 								<td><?php echo $room; ?></td>
-							</tr>
-							<tr>
-								<th scope="row"><h6>Room capacity</h6></th>
-								<td><?php echo $capacity; ?></td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<th scope="row"><h6>Extras</h6></th>
-								<td>
-									<ul><?php foreach($extras as $extra) { echo "<li>".$extra."</li>"; } ?></ul>
-								</td>
+                                <th scope="row"><h6>Room capacity</h6></th>
+                                <td><?php echo $capacity; ?></td>
 							</tr>
 							
 						</tbody>
 					</table>
 					<form class="needs-validation" novalidate action="" method="post">
 						<input type="hidden" name="name" value="<?php echo $name; ?>">
-						<input type="hidden" name="time" value="<?php echo $time; ?>">
+                        <input type="hidden" name="startTime" value="<?php echo $start_time; ?>">
+                        <input type="hidden" name="endTime" value="<?php echo $end_time; ?>">
 						<input type="hidden" name="date" value="<?php echo $date; ?>">
 						<input type="hidden" name="location" value="<?php echo $location; ?>">
 						<input type="hidden" name="capacity" value="<?php echo $capacity; ?>">
-						<?php foreach($extras as $extra) {
-							echo '<input type="hidden" name="extras[]" value="'. $extra. '">';
-						} ?>
 						<input type="hidden" name="roomRadio" value="<?php echo $room; ?>">
+
 						<button type="button" class="btn btn-outline-secondary" onclick="selectStep(event, 'formStep2')">Previous</button>
 						<button type="submit" class="btn btn-outline-primary" name="submitStep3">Book</button>
 					</form>

@@ -42,6 +42,7 @@ if(isset($_POST['LogIn'])) {
                     header("location:userhome.php");
                 } else {
                     $_SESSION['user-type'] = 'owner';
+                    $_SESSION['inst'] = $row['institute'];
                     header("location:ownerhome.php");
                 }
             }

@@ -32,3 +32,9 @@
 .tabcontent {
 	display: none;
 }
+#formStep1, #formStep2 {
+	padding-top: 40px;
+}
+#formStep3 {
+	padding-top: 20px;
+}

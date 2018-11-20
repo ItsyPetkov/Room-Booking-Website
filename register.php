@@ -226,18 +226,22 @@
                     echo "User already exists";
                 } else {
                     $sql2 = "INSERT INTO `cs312groupk`.`users` (`name`,`password`,`email`,`id`,`institute`) VALUES ('$name', '$encryptedPassword', '$email', NULL, '$institute');";
-                    $result2 = $db->query($sql2);
-                    if(empty($institute)){
-                        $_SESSION['name'] = $name;
-                        $_SESSION['email'] = $email;
-                        $_SESSION['user-type'] = 'normal';
-                        header("Location: userhome.php");
-                    }else{
-                        $_SESSION['name'] = $name;
-                        $_SESSION['email'] = $email;
-                        $_SESSION['user-type'] = 'owner';
-                        header("Location: ownerhome.php");
+                    if($result2 = $db->query($sql2)) {
+                        header("location:login.php");
+                    } else {
+                        echo "Something went wrong with creating your account!";
                     }
+//                    if(empty($institute)){
+//                        $_SESSION['name'] = $name;
+//                        $_SESSION['email'] = $email;
+//                        $_SESSION['user-type'] = 'normal';
+//                        header("Location: userhome.php");
+//                    }else{
+//                        $_SESSION['name'] = $name;
+//                        $_SESSION['email'] = $email;
+//                        $_SESSION['user-type'] = 'owner';
+//                        header("Location: ownerhome.php");
+//                    }
 
                 }
             } else {
