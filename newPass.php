@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-outline-primary" name="change">Log In</button>
+            <button type="submit" class="btn btn-outline-primary" name="change">Reset</button>
         </form>
     </div>
     <div>

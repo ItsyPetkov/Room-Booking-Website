@@ -5,6 +5,7 @@ include("includes/db.php");
 session_start();
 
 $email = $pwd = $wrong_acc_info = "";
+$update_state = $new_pass_info = $no_such_email = "";
 
 if(isset($_POST['LogIn'])) {
     $is_correct_email = $is_correct_pwd = false;
@@ -52,44 +53,41 @@ if(isset($_POST['LogIn'])) {
     }
 }
 
-/*if($invalidinfo === 0) {
+elseif(isset($_POST["pwdreset"])) {
 
-    if(isset($_POST["pwdreset"])) {
-        $email_found = 0;
-        $sql = "SELECT * FROM users";
-        $result = $db->query($sql);
+    $email = mysqli_real_escape_string($db, $_POST["email"]);
+    $email_found = 0;
+    $sql = "SELECT * FROM users";
+    $result = $db->query($sql);
 
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                if($row["email"] === $email) {
-                    $email_found = 1;
-                    break;
-                }
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            if($row["email"] === $email) {
+                $email_found = 1;
+                break;
             }
-        }
-
-        if($email_found === 1) {
-            $newpwd = rand();
-            $new_encr_pwd = md5($newpwd);
-            $message = "Your new password is $newpwd";
-            mail($email, "Password Reset - Group K's Website", $message);
-            $sql = "UPDATE users SET password = '$new_encr_pwd' WHERE email = '$email'";
-
-            if ($db->query($sql) === TRUE) {
-                echo "<div>Password updated successfully!</div>";
-                echo "<div>Your new password has been sent to: $email</div>";
-            } else {
-                echo "<div>Error updating record: " . $db->error . "</div>";
-            }
-        }
-
-        else {
-            echo "<div>No such email found</div>";
         }
     }
 
+    if($email_found === 1) {
+        $newpwd = rand();
+        $new_encr_pwd = md5($newpwd);
+        $message = "Your new password is $newpwd";
+        mail($email, "Password Reset - Group K's Website", $message);
+        $sql = "UPDATE users SET password = '$new_encr_pwd' WHERE email = '$email'";
 
-}*/
+        if ($db->query($sql) === TRUE) {
+            $update_state = "Password updated successfully!";
+            $new_pass_info = "Your new password has been sent to: $email";
+        } else {
+            echo "<div>Error updating record: " . $db->error . "</div>";
+        }
+    }
+
+    else {
+        $no_such_email = "No such email found";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -130,9 +128,9 @@ if(isset($_POST['LogIn'])) {
                     </div>
                     <div class="button">
                         <button type="submit" class="btn btn-outline-primary" name="LogIn">Log In</button>
+                        <p>Don't remember your password? <button type="submit" class="btn btn-link small" name="pwdreset">Reset password</button></p>
                     </div>
                 </form>
-
             </div>
         </div>
         <div class="row">
@@ -143,6 +141,9 @@ if(isset($_POST['LogIn'])) {
         <div class="row">
             <div class="col-12">
                 <p class="error"><?php echo $wrong_acc_info; ?></p>
+                <p class="error"><?php echo $update_state; ?></p>
+                <p class="error"><?php echo $new_pass_info; ?></p>
+                <p class="error"><?php echo $no_such_email; ?></p>
             </div>
         </div>
     </div>
