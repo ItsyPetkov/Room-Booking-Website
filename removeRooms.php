@@ -27,13 +27,13 @@
             $confirmed = $_POST["confirm"];
         }
 
-        // For some reason it doesn't enter into this loop when the page is first opened and idk why. Works as intended though
+        // Shouldn't work but it does ¯\_(ツ)_/¯
         // Will only delete row if "confirmed" is equal to the id of the row we want to delete
         if($confirmed != "no" && $confirmed != null)
         {
             // Issue the query
             $sql = "DELETE FROM `rooms` WHERE id = '$confirmed'";
-            mysqli_query($db, $sql);
+            //mysqli_query($db, $sql);
             echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
         }
 
