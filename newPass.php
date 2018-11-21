@@ -5,52 +5,60 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width-device-width, initial-scale-1.0">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="newPass.css"/>
-    <title>Reset Password</title>
+    <link rel="stylesheet" type="text/css" href="login.css"/>
+    <title>Change Password</title>
 </head>
 <body>
-    <div class="page-header">
-        <h1>Welcome to our website</h1>
-    </div>
-    <div class="form">
-        <div class="header">
-            <h1>Reset Password Details</h1>
-            <p>To reset your password please fill in the following...</p>
+<?php
+session_start();
+?>
+<div class="container text-center">
+    <div class="row">
+        <div class="col-12">
+            <div class="header">
+                <h1>Change your password</h1>
+                <p>In order to change to your password, please fill in the following</p>
+            </div>
         </div>
-        <form class="needs-validation" novalidate action="" method="post">
-            <div class="form-group row">
-                <label for="email" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-md-6 mb-3">
-                    <input type="text" class="form-control" name="email" id="email" placeholder="Enter name of meeting" autocomplete="off" value="<?php if(isset($_POST['LogIn'])){echo $_POST['email'];} ?>" required>
-                    <div class="invalid-feedback">
-                        Please enter an email!
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="oldPass" class="col-sm-2 col-form-label">Old Password</label>
-                <div class="col-md-6 mb-3">
-                    <input type="password" class="form-control" name="oldPass" id="oldPass" placeholder="Enter name of meeting" autocomplete="off" value="<?php if(isset($_POST['change'])){echo $_POST['newPass'];} ?>" required>
-                    <div class="invalid-feedback">
-                        Please enter a password!
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="newPass" class="col-sm-2 col-form-label">New Password</label>
-                <div class="col-md-6 mb-3">
-                    <input type="password" class="form-control" name="newPass" id="newPass" placeholder="Enter name of meeting" autocomplete="off" value="<?php if(isset($_POST['change'])){echo $_POST['oldPass'];} ?>" required>
-                    <div class="invalid-feedback">
-                        Please enter a password!
-                    </div>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-outline-primary" name="change">Reset</button>
-        </form>
     </div>
+    <div class="row">
+        <div class="col-12">
+            <form class="needs-validation" novalidate action="" method="post">
+                <div class="form-group row">
+                    <div class="col-md-4 offset-md-4 mb-3">
+                        <input type="text" class="form-control" name="email" id="email" placeholder="Email address" autocomplete="off" value="<?php echo $_SESSION['email']; ?>" required>
+                        <div class="invalid-feedback">Please, enter an email!</div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4 offset-md-4 mb-3">
+                        <input type="password" class="form-control" name="oldPass" id="password" placeholder="Old Password" autocomplete="off" value="<?php if(isset($_POST['change'])){echo $_POST['oldPass'];} ?>" required>
+                        <div class="invalid-feedback">Please, enter a password!</div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4 offset-md-4 mb-3">
+                        <input type="password" class="form-control" name="newPass" id="password" placeholder="New Password" autocomplete="off" value="<?php if(isset($_POST['change'])){echo $_POST['newPass'];} ?>" required>
+                        <div class="invalid-feedback">Please, enter a password!</div>
+                    </div>
+                </div>
+                <div class="button">
+                    <button type="submit" class="btn btn-outline-primary" name="change">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+<!--            <p class="error">--><?php //echo $wrong_acc_info; ?><!--</p>-->
+<!--            <p class="error">--><?php //echo $update_state; ?><!--</p>-->
+<!--            <p class="error">--><?php //echo $new_pass_info; ?><!--</p>-->
+<!--            <p class="error">--><?php //echo $no_such_email; ?><!--</p>-->
+        </div>
+    </div>
+</div>
     <div>
         <?php
         /**
@@ -61,20 +69,17 @@
          */
 
 
-        if(isset($_POST['change'])){
-            if(empty($_POST['newPass']) || preg_match('/\s/', $_POST['newPass']))
-            {
+        if(isset($_POST['change'])) {
+            if (empty($_POST['newPass']) || preg_match('/\s/', $_POST['newPass'])) {
                 echo "No spaces allowed in new password!";
-            }
-            else
-            {
+            } else {
                 //Connect to the Database
                 $serverName = "devweb2018.cis.strath.ac.uk";
                 $userName = "cs312groupk";
                 $password = "aeCh1ang9ahm";
                 $dbname = $userName;
                 $conn = new mysqli($serverName, $userName, $password, $dbname);
-                if($conn->connect_error){
+                if ($conn->connect_error) {
                     die("Failed to connect to database");
                 }
 

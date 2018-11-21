@@ -14,9 +14,10 @@ session_start();
 </head>
 <body>
 <?php include("includes/header.php"); ?>
+<div class="container">
     <form>
-        <table>
-            <tr><th></th><th></th><th></th></tr>
+        <table class="table table-hover">
+            <tr class="active"><th></th><th></th><th></th></tr>
             <?php
             /**
              * Created by IntelliJ IDEA.
@@ -32,13 +33,13 @@ session_start();
             $result2 = $db->query($sql2);
             while($row = $result2->fetch_assoc()){
                 echo "<tr>";
-                echo "<td><b>Account ID </b></td><td>".$row["id"]."</td><td>Edit Button here</td>";
+                echo "<td><b>Account ID </b></td><td>".$row["id"]."</td><td>Can't edit this, Sorry!</td>";
                 echo "</tr>\n";
                 echo "<tr>";
-                echo "<td><b>Username </b></td><td>".$row["name"]."</td><td>Edit Button here</td>";
+                echo "<td><b>Username </b></td><td>".$row["name"]."</td><td><button type='button' class='btn btn-link' data-target='#editNamePage'  data-toggle='modal'>Edit</button></td>";
                 echo "</tr>\n";
                 echo "<tr>";
-                echo "<td><b>Email </b></td><td>".$row["email"]."</td><td>Edit Button here</td>";
+                echo "<td><b>Email </b></td><td>".$row["email"]."</td><td><button type='button' class='btn btn-link' data-target='#editEmailPage'  data-toggle='modal'>Edit</button></td>";
                 echo "</tr>\n";
                 if($_SESSION['user-type'] === "owner")
                 {
@@ -55,10 +56,101 @@ session_start();
 //                echo "</tr>\n";
             }
             echo "</table>";
-            echo "<p>Want to change your passowrd? <a href=\"newPass.php\">Change here</a></p>"
+            echo "<p>Want to change your password? <a href=\"newPass.php\">Change here</a></p>"
 
             ?>
         </table>
     </form>
+    <div class="modal fade" role="dialog" id="editNamePage" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Edit Details</h6>
+                </div>
+                <div class="modal-body">
+                    <form action="details.php" method="post">
+                        <div class="form-group">
+                            Email: <input type="text" class="form-control" name="newname" placeholder="Enter new username"/>
+                        </div>
+                        <div class="form-group">
+                            Confirm Email: <input type="text" class="form-control" name="conname" placeholder="Confirm your username"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="editname" class="btn btn-outline-primary" >Edit</button>
+                            <button class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+        <div class="modal fade" role="dialog" id="editEmailPage" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Edit Details</h6>
+                    </div>
+                    <div class="modal-body">
+                        <form action="details.php" method="post">
+                            <div class="form-group">
+                                Email: <input type="text" class="form-control" name="newmail" placeholder="Enter new email"/>
+                            </div>
+                            <div class="form-group">
+                                Confirm Email: <input type="text" class="form-control" name="confmail" placeholder="Confirm your email"/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" name="editemail" class="btn btn-outline-primary">Edit</button>
+                                <button class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    <div>
+    <?php
+        if(isset($_POST['editname']))
+        {
+            $newName = isset($_POST["newname"])? mysqli_real_escape_string($db, $_POST["newname"]): "";
+            $confName = isset($_POST["conname"])? mysqli_real_escape_string($db, $_POST["conname"]): "";
+
+            if($newName === $confName){
+                $sql = "UPDATE `cs312groupk`.`users` SET `name` = '$confName' WHERE `id` = '$id'";
+                $result = $db->query($sql);
+                if($result){
+                    echo "Name changed successfully";
+                }else{
+                    echo "Change failed";
+                }
+            }else{
+                echo "Names don't match, please try again";
+            }
+        }
+
+        elseif(isset($_POST['editemail'])){
+
+            $newEmail = isset($_POST["newmail"])? mysqli_real_escape_string($db, $_POST["newmail"]): "";
+            $confEmail = isset($_POST["confmail"])? mysqli_real_escape_string($db, $_POST["confmail"]): "";
+
+            if($newEmail === $confEmail){
+                $sql3 = "UPDATE `cs312groupk`.`users` SET `email` = '$confEmail' WHERE `id` = '$id'";
+                $result3 = $db->query($sql3);
+                if($result3){
+                    echo "Email changed successfully";
+                }else{
+                    echo "Change failed";
+                }
+            }else{
+                echo "Emails don't match, please try again";
+            }
+        }
+    ?>
+    </div>
+</div>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
