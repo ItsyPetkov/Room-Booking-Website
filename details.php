@@ -44,7 +44,7 @@ session_start();
                 if($_SESSION['user-type'] === "owner")
                 {
                     echo "<tr>";
-                    echo "<td><b>Institute </b>".$row["institute"]."</td>";
+                    echo "<td><b>Institute </b>".$row["institute"]."</td><td><button type='button' class='btn btn-link' data-target='#editInstitutionPage'  data-toggle='modal'>Edit</button></td>";
                     echo "</tr>\n";
                 }
 
@@ -81,7 +81,6 @@ session_start();
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
@@ -95,7 +94,7 @@ session_start();
                     <div class="modal-body">
                         <form action="details.php" method="post">
                             <div class="form-group">
-                                Email: <input type="text" class="form-control" name="newmail" placeholder="Enter new email"/>
+                                New Email: <input type="text" class="form-control" name="newmail" placeholder="Enter new email"/>
                             </div>
                             <div class="form-group">
                                 Confirm Email: <input type="text" class="form-control" name="confmail" placeholder="Confirm your email"/>
@@ -106,10 +105,34 @@ session_start();
                             </div>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" role="dialog" id="editInstitutionPage" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Edit Details</h6>
+                    </div>
+                    <div class="modal-body">
+                        <form action="details.php" method="post">
+                            <div class="form-group">
+                                New Institution: <input type="text" class="form-control" name="newInstitution" placeholder="Enter new Institution"/>
+                            </div>
+                            <div class="form-group">
+                                Confirm Institution: <input type="text" class="form-control" name="confInstitution" placeholder="Confirm your Institution"/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" name="editInstitution" class="btn btn-outline-primary">Edit</button>
+                                <button class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <div>
     <?php
         if(isset($_POST['editname']))
@@ -145,6 +168,23 @@ session_start();
                 }
             }else{
                 echo "Emails don't match, please try again";
+            }
+        }
+
+        elseif(isset($_POST['editInstitution'])){
+            $newInstitution = isset($_POST['newInstitution'])? mysqli_real_escape_string($db, $_POST['newInstitution']): "";
+            $confInstitution = isset($_POST['confInstitution'])? mysqli_real_escape_string($db, $_POST['confInstitution']): "";
+
+            if($newInstitution === $confInstitution){
+                $sql4 = "UPDATE `cs312groupk`.`users` SET `institute` = '$confInstitution' WHERE `id` = '$id'";
+                $result4 = $db->query($sql4);
+                if($result4){
+                    echo "Institution changed successfully";
+                }else{
+                    echo "Change failed";
+                }
+            }else{
+                echo "Institutions don't match, please try again";
             }
         }
     ?>
