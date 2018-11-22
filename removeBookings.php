@@ -16,11 +16,6 @@
         include("includes/config.php");
         include("includes/db.php");
 
-        if ($db->connect_error)
-        {
-            die("Connection failed : ".$db->connect_error); // Remove once working!!!
-        }
-
         $confirmed = 0;
         if (isset($_POST["confirm"]))
         {

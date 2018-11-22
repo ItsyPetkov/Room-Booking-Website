@@ -2,37 +2,44 @@
 <html lang="en">
 <head>
     <title>Confirm deletion</title>
-    <h1>Title</h1>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 <body>
 <div>
-    Are you sure you want to delete this room?
     <form method="post">
-        <?php $chosenRoom = $_GET["remove-room"]; ?>
-        <td><button type="submit" name = "confirm" value = <?php echo $chosenRoom; ?>>Yes</button></td>
-        <td><button type="submit" name = "confirm" value = no>No</button></td>
-
+        <input type = "hidden" id = "deleteField" name = "deleteRow">
+        <button onclick="remove()">🔥 Delete 🔥</button>
+        <p id="prompt"></p>
+        <script>
+            function remove()
+            {
+                var userchoice;
+                if (confirm("Are you sure you want to delete this room?"))
+                {
+                    userchoice = "delete"
+                } else {
+                    userchoice = null;
+                }
+                document.getElementById("deleteField").value = userchoice;
+            }
+        </script>
+    </form>
         <?php
         // connect to mysql
         include("includes/config.php");
         include("includes/db.php");
 
-        if ($db->connect_error)
+        $delete = null;
+        if (isset($_POST["deleteRow"]))
         {
-            die("Connection failed : ".$db->connect_error); // Remove once working!!!
+            $delete = $_POST["deleteRow"];
         }
 
-        $confirmed = 0;
-        if (isset($_POST["confirm"]))
-        {
-            $confirmed = $_POST["confirm"];
-        }
-
-        // Shouldn't work but it does ¯\_(ツ)_/¯
         // Will only delete row if "confirmed" is equal to the id of the row we want to delete
-        if($confirmed != "no" && $confirmed != null)
+        if($delete != "no" && $delete != null)
         {
             // Issue the query
-            $sql = "DELETE FROM `rooms` WHERE id = '$confirmed'";
+            $sql = "DELETE FROM `rooms` WHERE id = '$delete'";
             //mysqli_query($db, $sql);
             echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
         }
