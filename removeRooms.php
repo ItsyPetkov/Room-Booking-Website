@@ -8,7 +8,7 @@
 <div>
     <form method="post">
         <input type = "hidden" id = "deleteField" name = "deleteRow">
-        <button onclick="remove()">Delete</button>
+        <button onclick="remove()">🔥 Delete 🔥</button>
         <p id="prompt"></p>
         <script>
             function remove()
