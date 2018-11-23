@@ -17,9 +17,6 @@
  */
 
 
-include("includes/config.php");
-include("includes/db.php");
-include("includes/header.php");
 
 session_start();
 if($_SESSION['user-type'] === 'owner')
@@ -31,6 +28,10 @@ if($_SESSION['user-type'] === 'owner')
 $id = $_SESSION['id'];
 $name = $_SESSION['name'];
 $email = $_SESSION['email'];
+
+include("includes/config.php");
+include("includes/db.php");
+include("includes/header.php");
 
 $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms r ON (r.id = b.room_id) WHERE b.user_id = '$id'");
 ?>
