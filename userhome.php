@@ -11,10 +11,6 @@ include("includes/config.php");
 include("includes/db.php");
 
 session_start();
-if($_SESSION['user-type'] === 'owner')
-{
-    header("location:ownerhome.php");
-}
 
 $id = $_SESSION['id'];
 $name = $_SESSION['name'];
@@ -38,6 +34,8 @@ $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms
     <?php if($result->num_rows == 0) { ?>
         <div class="alert alert-primary" role="alert">
             You haven't made any bookings yet.
+            <form action = 'bookroom.php' method = 'post'>
+            <button name ='book' class='btn btn-outline-primary' /> Book a Room!</button></form>
         </div>
     <?php } else { ?>
         <table class="table">
@@ -58,8 +56,8 @@ $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms
                     <td><?php echo $row["meeting_date"]; ?></td>
                     <td><?php echo $row["institution"]; ?></td>
                     <td><?php echo $row["roomNumber"]; ?></td>
-                    <form action = 'removeBooking.php' value = <?php echo $row["id"]; ?> method = 'post'>;
-                    <td><button name ='remove'  value=<?php echo $row["id"]; ?>/> Remove Room</button></td></form>;
+                    <form action = 'removeBooking.php' value = <?php echo $row["booking_id"]; ?> method = 'post'>
+                    <td><button name ='remove' class='btn btn-outline-primary'  value=<?php echo $row["booking_id"]; ?>/> Remove Room</button></td></form>;
 
                 </tr>
             <?php } ?>
