@@ -50,6 +50,7 @@
 
  <?php } else { ?>
 
+    <form method="post">
     <table class="table">
             <thead>
             <tr>
@@ -68,47 +69,45 @@
         <td> <?php echo  $row["institute"]?> </td>
         <td><?php echo  $row["capacity"]?> </td>
         <td><?php echo  $row["hoursAvailableS"]?>  - <?php echo $row["hoursAvailableE"]?> </td>
-            <td><div>
-                <form method="post">
-                    <input type = "hidden" id = "deleteField" name = "deleteRow">
-                    <button onclick="remove()">Delete</button>
-                    <p id="prompt"></p>
-                    <script>
-                        function remove()
-                        {
-                            var userchoice;
-                            if (confirm("Are you sure you want to delete this room?"))
-                            {
-                                userchoice = "delete"
-                            } else {
-                                userchoice = null;
-                            }
-                            document.getElementById("deleteField").value = userchoice;
-                        }
-                    </script>
-                </form>
-                <?php
 
-                $delete = null;
-                if (isset($_POST["deleteRow"]))
+        <input type = "hidden" id = "deleteField" name = "deleteRow">
+            <td><button onclick="remove()">Delete</button></td>
+        <script>
+            function remove()
+            {
+                var userchoice;
+                if (confirm("Are you sure you want to delete this room?"))
                 {
-                    $delete = $_POST["deleteRow"];
+                    userchoice = "delete"
+                } else {
+                    userchoice = null;
                 }
+                document.getElementById("deleteField").value = userchoice;
+            }
+        </script>
+        <?php
 
-                // Will only delete row if "confirmed" is equal to the id of the row we want to delete
-                if($delete != "no" && $delete != null)
-                {
-                    // Issue the query
-                    $sql = "DELETE FROM `rooms` WHERE id = '$delete'";
-                    //mysqli_query($db, $sql);
-                    echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
-                }
-                ?>
-                </div></td>
+    $delete = null;
+    if (isset($_POST["deleteRow"]))
+    {
+        $delete = $_POST["deleteRow"];
+    }
+
+    // Will only delete row if "confirmed" is equal to the id of the row we want to delete
+    if($delete != "no" && $delete != null)
+    {
+        // Issue the query
+        $sql = "DELETE FROM `rooms` WHERE id = '$delete'";
+        //mysqli_query($db, $sql);
+        echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
+    }
+    ?>
+
         </tr>
      <?php } ?>
      </tbody>
     </table>
+    </form>
  <?php } ?>
 <div></div>
 <?php if($result2->num_rows == 0) { ?>
