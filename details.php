@@ -1,5 +1,6 @@
 <?php
 session_start();
+$name = $_SESSION['name'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,10 +71,10 @@ session_start();
                 <div class="modal-body">
                     <form action="details.php" method="post">
                         <div class="form-group">
-                            Email: <input type="text" class="form-control" name="newname" placeholder="Enter new username"/>
+                            Username: <input type="text" class="form-control" name="newname" placeholder="Enter new username"/>
                         </div>
                         <div class="form-group">
-                            Confirm Email: <input type="text" class="form-control" name="conname" placeholder="Confirm your username"/>
+                            Confirm Username: <input type="text" class="form-control" name="conname" placeholder="Confirm your username"/>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" name="editname" class="btn btn-outline-primary" >Edit</button>
@@ -84,6 +85,7 @@ session_start();
             </div>
         </div>
     </div>
+</div>
 
         <div class="modal fade" role="dialog" id="editEmailPage" tabindex="-1">
             <div class="modal-dialog">
@@ -132,7 +134,6 @@ session_start();
                 </div>
             </div>
         </div>
-
     <div>
     <?php
         if(isset($_POST['editname']))
@@ -144,12 +145,13 @@ session_start();
                 $sql = "UPDATE `cs312groupk`.`users` SET `name` = '$confName' WHERE `id` = '$id'";
                 $result = $db->query($sql);
                 if($result){
-                    echo "Name changed successfully";
+                    echo "<p style='text-align: center'>Name changed successfully, please refresh page to view results</p>";
+                    $_SESSION['name'] = $confName;
                 }else{
-                    echo "Change failed";
+                    echo "<p style='text-align: center'>Change failed</p>";
                 }
             }else{
-                echo "Names don't match, please try again";
+                echo "<p style='text-align: center'>Names don't match, please try again</p>";
             }
         }
 
@@ -158,16 +160,17 @@ session_start();
             $newEmail = isset($_POST["newmail"])? mysqli_real_escape_string($db, $_POST["newmail"]): "";
             $confEmail = isset($_POST["confmail"])? mysqli_real_escape_string($db, $_POST["confmail"]): "";
 
-            if($newEmail === $confEmail){
+            if(($newEmail === $confEmail) && filter_var($confEmail, FILTER_VALIDATE_EMAIL)){
                 $sql3 = "UPDATE `cs312groupk`.`users` SET `email` = '$confEmail' WHERE `id` = '$id'";
                 $result3 = $db->query($sql3);
                 if($result3){
-                    echo "Email changed successfully";
+                    echo "<p style='text-align: center'>Email changed successfully, please refresh page to view results</p>";
+                    $_SESSION['email'] = $confEmail;
                 }else{
-                    echo "Change failed";
+                    echo "<p style='text-align: center'>Change failed</p>";
                 }
             }else{
-                echo "Emails don't match, please try again";
+                echo "<p style='text-align: center'>Emails don't match or are not valid, please try again</p>";
             }
         }
 
@@ -179,12 +182,13 @@ session_start();
                 $sql4 = "UPDATE `cs312groupk`.`users` SET `institute` = '$confInstitution' WHERE `id` = '$id'";
                 $result4 = $db->query($sql4);
                 if($result4){
-                    echo "Institution changed successfully";
+                    echo "<p style='text-align: center'>Institution changed successfully, please refresh page to view results</p>";
+                    $_SESSION['institute'] = $confInstitution;
                 }else{
-                    echo "Change failed";
+                    echo "<p style='text-align: center'>Change failed</p>";
                 }
             }else{
-                echo "Institutions don't match, please try again";
+                echo "<p style='text-align: center'>Institutions don't match, please try again</p>";
             }
         }
     ?>
