@@ -50,7 +50,6 @@
 
  <?php } else { ?>
 
-    <form method="post">
     <table class="table">
             <thead>
             <tr>
@@ -63,7 +62,8 @@
             </thead>
              <tbody>
      <?php while ($row = $result->fetch_assoc()) { ?>
-        <tr>
+     <form method="post">
+     <tr>
         <td> <?php echo  $row["roomNumber"]?> </td>
         <td><?php echo  $row["building"]?> </td>
         <td> <?php echo  $row["institute"]?> </td>
@@ -104,10 +104,10 @@
     ?>
 
         </tr>
+     </form>
      <?php } ?>
      </tbody>
     </table>
-    </form>
  <?php } ?>
 <div></div>
 <?php if($result2->num_rows == 0) { ?>
