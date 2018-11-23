@@ -92,7 +92,7 @@
 				<hr>
 				<p class="mb-0">We've just sent you an email to confirm the booking.</p>
 			</div>
-			<a class="btn btn-outline-secondary" href="#">View your bookings</a>
+			<a class="btn btn-outline-secondary" href="userhome.php">View your bookings</a>
 			<?php } else { ?>
 			<div class="row">
 				<ul class="nav justify-content-center step-wizard" style="width: 100%;">
