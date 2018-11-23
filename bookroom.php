@@ -88,7 +88,7 @@
 			<?php if ($booked == true) { ?>
 			<div class="alert alert-success" role="alert">
 				<h4 class="alert-heading">Well done!</h4>
-				<p>You successfully booked <?php echo $room." in ".$location." for ".$date." at ".$time ?>!</p>
+				<p>You successfully booked <?php echo $room." in ".$location." for ".$date." at ".$start_time ?>!</p>
 				<hr>
 				<p class="mb-0">We've just sent you an email to confirm the booking.</p>
 			</div>
