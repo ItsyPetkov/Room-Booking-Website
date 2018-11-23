@@ -1,27 +1,3 @@
-<?php
-/**
- * Created by IntelliJ IDEA.
- * User: rnb16141
- * Date: 14/11/2018
- * Time: 14:22
- */
-
-
-include("includes/config.php");
-include("includes/db.php");
-
-session_start();
-if($_SESSION['user-type'] === 'owner')
-{
-    header("location:ownerhome.php");
-}
-
-$id = $_SESSION['id'];
-$name = $_SESSION['name'];
-$email = $_SESSION['email'];
-
-$result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms r ON (r.id = b.room_id) WHERE b.user_id = '$id'");
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,13 +7,43 @@ $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Homepage</title>
-</head>
+
+<?php
+/**
+ * Created by IntelliJ IDEA.
+ * User: rnb16141
+ * Date: 14/11/2018
+ * Time: 14:22
+ */
+
+
+
+session_start();
+if($_SESSION['user-type'] === 'owner')
+{
+    header("location:ownerhome.php");
+}
+
+
+$id = $_SESSION['id'];
+$name = $_SESSION['name'];
+$email = $_SESSION['email'];
+
+include("includes/config.php");
+include("includes/db.php");
+include("includes/header.php");
+
+$result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms r ON (r.id = b.room_id) WHERE b.user_id = '$id'");
+?>
+
 <body>
-<?php include("includes/header.php"); ?>
+
 <div class="container">
     <?php if($result->num_rows == 0) { ?>
         <div class="alert alert-primary" role="alert">
             You haven't made any bookings yet.
+            <form action = 'bookroom.php' method = 'post'>
+                <button name ='book' class='btn btn-outline-primary' /> Book a Room!</button></form>
         </div>
     <?php } else { ?>
         <table class="table">
@@ -58,8 +64,8 @@ $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms
                     <td><?php echo $row["meeting_date"]; ?></td>
                     <td><?php echo $row["institution"]; ?></td>
                     <td><?php echo $row["roomNumber"]; ?></td>
-                    <form action = 'removeBooking.php' value = <?php echo $row["id"]; ?> method = 'post'>;
-                    <td><button name ='remove'  value=<?php echo $row["id"]; ?>/> Remove Room</button></td></form>;
+                    <form action = 'removeBooking.php' value = <?php echo $row["booking_id"]; ?> method = 'post'>
+                    <td><button name ='remove' class='btn btn-outline-primary'  value=<?php echo $row["booking_id"]; ?>/> Remove Room</button></td></form>;
 
                 </tr>
             <?php } ?>

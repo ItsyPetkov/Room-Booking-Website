@@ -8,7 +8,7 @@
 <div>
     <form method="post">
         <input type = "hidden" id = "deleteField" name = "deleteRow">
-        <button onclick="remove()">🔥 Delete 🔥</button>
+        <button onclick="remove()">Delete</button>
         <p id="prompt"></p>
         <script>
             function remove()
@@ -46,9 +46,6 @@
 
         // Disconnect
         $db->close();
-
-        //header("Location: https://devweb2018.cis.strath.ac.uk/~gxb16190/groupk/index.php");
-        //exit();
         ?>
 </div>
 </body>
