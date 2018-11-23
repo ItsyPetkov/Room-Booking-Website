@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2f5f40e0-a6fd-48f2-bcb5-524c1e6f3e41" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ownerhome.php" beforeDir="false" afterPath="$PROJECT_DIR$/ownerhome.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userhome.php" beforeDir="false" afterPath="$PROJECT_DIR$/userhome.php" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,49 +34,62 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="php" value="223" />
-          <entry key="txt" value="129" />
+          <entry key="php" value="238" />
+          <entry key="txt" value="132" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PHP" value="223" />
-          <entry key="PLAIN_TEXT" value="129" />
+          <entry key="PHP" value="238" />
+          <entry key="PLAIN_TEXT" value="132" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="php" value="5" />
+          <entry key="php" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PHP" value="5" />
+          <entry key="PHP" value="6" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ownerhome.php">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/removeTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="106" column="12" selection-start-line="106" selection-start-column="12" selection-end-line="106" selection-end-column="12" />
+            <state relative-caret-position="340">
+              <caret line="36" column="6" lean-forward="true" selection-start-line="5" selection-start-column="4" selection-end-line="36" selection-end-column="6" />
               <folding>
-                <element signature="n#tr#0;n#tbody#0;n#table#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="e#625#630#0#PHP" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/removeTest.php">
+        <entry file="file://$PROJECT_DIR$/ownerhome.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="17" lean-forward="true" selection-end-line="1" />
+            <state relative-caret-position="72">
+              <caret line="64" column="18" selection-start-line="64" selection-end-line="65" />
               <folding>
-                <element signature="e#625#630#0#PHP" />
+                <element signature="n#script#0;n#form#0;n#div#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="e#3009#3014#0#PHP" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/userhome.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="388">
+              <caret line="95" column="53" selection-start-line="95" selection-start-column="53" selection-end-line="95" selection-end-column="53" />
+              <folding>
+                <element signature="n#script#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" />
               </folding>
             </state>
           </provider>
@@ -146,6 +159,7 @@
         <option value="$PROJECT_DIR$/details.php" />
         <option value="$PROJECT_DIR$/removeTest.php" />
         <option value="$PROJECT_DIR$/ownerhome.php" />
+        <option value="$PROJECT_DIR$/userhome.php" />
       </list>
     </option>
   </component>
@@ -189,7 +203,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543012234470" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543013133123" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="SDKs" />
@@ -242,7 +256,7 @@
       <option name="presentableId" value="Default" />
       <updated>1542810024449</updated>
       <workItem from="1542810027965" duration="2300000" />
-      <workItem from="1542995804408" duration="6898000" />
+      <workItem from="1542995804408" duration="7813000" />
     </task>
     <task id="LOCAL-00001" summary="Owner home merged with removeRooms?">
       <created>1542996418352</created>
@@ -272,11 +286,18 @@
       <option name="project" value="LOCAL" />
       <updated>1543008678620</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Fixed button in table v2">
+      <created>1543012253672</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1543012253672</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12892000" />
+    <option name="totallyTimeSpent" value="13807000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
@@ -355,18 +376,12 @@
     <MESSAGE value="Fixed table formatting" />
     <MESSAGE value="Buggered up details by accident, fixed now" />
     <MESSAGE value="Fixed button in table" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed button in table" />
+    <MESSAGE value="Fixed button in table v2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed button in table v2" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/includes/header.php">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/userhome.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/removeBookings.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -415,8 +430,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/removeTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="17" lean-forward="true" selection-end-line="1" />
+        <state relative-caret-position="340">
+          <caret line="36" column="6" lean-forward="true" selection-start-line="5" selection-start-column="4" selection-end-line="36" selection-end-column="6" />
           <folding>
             <element signature="e#625#630#0#PHP" />
           </folding>
@@ -425,10 +440,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ownerhome.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="106" column="12" selection-start-line="106" selection-start-column="12" selection-end-line="106" selection-end-column="12" />
+        <state relative-caret-position="72">
+          <caret line="64" column="18" selection-start-line="64" selection-end-line="65" />
           <folding>
-            <element signature="n#tr#0;n#tbody#0;n#table#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#script#0;n#form#0;n#div#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="e#3009#3014#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/userhome.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="95" column="53" selection-start-line="95" selection-start-column="53" selection-end-line="95" selection-end-column="53" />
+          <folding>
+            <element signature="n#script#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" />
           </folding>
         </state>
       </provider>
