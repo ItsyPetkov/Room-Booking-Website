@@ -14,11 +14,11 @@
     {
         header("location:userhome.php");
     }
-    include("includes/header.php");
+
     $name = $_SESSION['name'];
     $email = $_SESSION['email'];
     $inst = $_SESSION['inst'];
-
+    include("includes/header.php");
     include("includes/config.php");
     include("includes/db.php");
 
