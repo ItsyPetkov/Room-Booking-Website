@@ -11,6 +11,10 @@ include("includes/config.php");
 include("includes/db.php");
 
 session_start();
+if($_SESSION['user-type'] === 'owner')
+{
+    header("location:ownerhome.php");
+}
 
 $id = $_SESSION['id'];
 $name = $_SESSION['name'];

@@ -9,6 +9,10 @@
     <link href="css/style.css" rel="stylesheet">
     <?php
     session_start();
+    if($_SESSION['user-type'] === 'normal')
+    {
+        header("location:userhome.php");
+    }
     include("includes/header.php");
     ?>
     <h1>Home lmao </h1>
