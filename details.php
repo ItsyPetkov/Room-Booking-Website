@@ -45,7 +45,7 @@ $name = $_SESSION['name'];
                 if($_SESSION['user-type'] === "owner")
                 {
                     echo "<tr>";
-                    echo "<td><b>Institute </b>".$row["institute"]."</td><td><button type='button' class='btn btn-link' data-target='#editInstitutionPage'  data-toggle='modal'>Edit</button></td>";
+                    echo "<td><b>Institute </b></td><td>".$row["institute"]."</td><td><button type='button' class='btn btn-link' data-target='#editInstitutionPage'  data-toggle='modal'>Edit</button></td>";
                     echo "</tr>\n";
                 }
 
