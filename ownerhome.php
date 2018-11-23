@@ -68,7 +68,7 @@
         <td> <?php echo  $row["institute"]?> </td>
         <td><?php echo  $row["capacity"]?> </td>
         <td><?php echo  $row["hoursAvailableS"]?>  - <?php echo $row["hoursAvailableE"]?> </td>
-            <div>
+            <td><div>
                 <form method="post">
                     <input type = "hidden" id = "deleteField" name = "deleteRow">
                     <button onclick="remove()">Delete</button>
@@ -104,7 +104,7 @@
                     echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
                 }
                 ?>
-            </div>
+                </div></td>
         </tr>
      <?php } ?>
      </tbody>
