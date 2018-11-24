@@ -58,47 +58,56 @@ $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms
             </thead>
             <tbody>
             <?php while ($row = $result->fetch_assoc()) { ?>
-            <form method="post">
+            <form action="userhome.php" method="post">
             <tr>
                     <td><?php echo $row["meeting_name"]; ?></td>
                     <td><?php echo $row["start_time"]." - ".$row["end_time"]; ?></td>
                     <td><?php echo $row["meeting_date"]; ?></td>
                     <td><?php echo $row["institution"]; ?></td>
                     <td><?php echo $row["roomNumber"]; ?></td>
-
-                    <input type = "hidden" id = "deleteField" name = "deleteRow">
-                    <td><button onclick="remove()">Delete</button></td>
-                    <script>
-                        function remove()
-                        {
-                            var userchoice;
-                            if (confirm("Are you sure you want to delete this room?"))
-                            {
-                                userchoice = "delete"
-                            } else {
-                                userchoice = null;
-                            }
-                            document.getElementById("deleteField").value = userchoice;
-                        }
-                    </script>
+                    <?php $id = $row["booking_id"]?>
+                    <td><button class="btn btn-outline-danger" name="<?php echo $id;?>" data-dismiss="modal">Delete</button></td>
                     <?php
-
-                    $delete = null;
-                    if (isset($_POST["deleteRow"]))
+                    if(isset($_POST[$id]))
                     {
-                        $delete = $row["user_id"];
-                    }
-
-                    // Will only delete row if "confirmed" is equal to the id of the row we want to delete
-                    if($delete != "no" && $delete != null)
-                    {
-                        // Issue the query
-                        $sql = "DELETE FROM `bookings` WHERE id = '$delete'";
-                        //mysqli_query($db, $sql);
-                        echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
+                        $sql = "DELETE FROM `bookings` WHERE `bookings`.`booking_id` = '$id'";
+                        mysqli_query($db, $sql);
+                        header("Location: userhome.php");
                     }
                     ?>
 
+<!--                    <input type = "hidden" id = "deleteField" name = "deleteRow">-->
+<!--                    <td><button onclick="remove()">Delete</button></td>-->
+<!--                    <script>-->
+<!--                        function remove()-->
+<!--                        {-->
+<!--                            var userchoice;-->
+<!--                            if (confirm("Are you sure you want to delete this room?"))-->
+<!--                            {-->
+<!--                                userchoice = "delete"-->
+<!--                            } else {-->
+<!--                                userchoice = null;-->
+<!--                            }-->
+<!--                            document.getElementById("deleteField").value = userchoice;-->
+<!--                        }-->
+<!--                    </script>-->
+<!--                    --><?php
+//
+//                    $delete = null;
+//                    if (isset($_POST["deleteRow"]))
+//                    {
+//                        $delete = $_POST["deleteRow"];
+//                    }
+//
+//                    // Will only delete row if "confirmed" is equal to the id of the row we want to delete
+//                    if($delete != "no" && $delete != null)
+//                    {
+//                        // Issue the query
+//                        $sql = "DELETE FROM `bookings` WHERE id = '$delete'";
+//                        //mysqli_query($db, $sql);
+//                        echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
+//                    }
+//                    ?>
                 </tr>
             </form>
             <?php } ?>
