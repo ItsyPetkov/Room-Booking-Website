@@ -34,23 +34,23 @@
 
 <body>
 <div class="container">
-<?php /**
- * Created by IntelliJ IDEA.
- * User: rnb16141
- * Date: 14/11/2018
- * Time: 14:23
- */?>
+    <?php /**
+     * Created by IntelliJ IDEA.
+     * User: rnb16141
+     * Date: 14/11/2018
+     * Time: 14:23
+     */?>
 
- <?php if($result->num_rows == 0) { ?>
-    <div class="alert alert-primary" role="alert">
-        Your institution hasn't added any rooms yet!
-        <form action = 'addroom.php' method = 'post'>
-            <button name ='add' class='btn btn-outline-primary' /> Add Room</button></form>
-    </div>
+    <?php if($result->num_rows == 0) { ?>
+        <div class="alert alert-primary" role="alert">
+            Your institution hasn't added any rooms yet!
+            <form action = 'addroom.php' method = 'post'>
+                <button name ='add' class='btn btn-outline-primary' /> Add Room</button></form>
+        </div>
 
- <?php } else { ?>
+    <?php } else { ?>
 
-    <table class="table">
+        <table class="table">
             <thead>
             <tr>
                 <th>Room Number </th>
@@ -60,83 +60,91 @@
                 <th>Hours Available </th>
             </tr>
             </thead>
-             <tbody>
-     <?php while ($row = $result->fetch_assoc()) { ?>
-     <form method="post">
-     <tr>
-        <td> <?php echo  $row["roomNumber"]?> </td>
-        <td><?php echo  $row["building"]?> </td>
-        <td> <?php echo  $row["institute"]?> </td>
-        <td><?php echo  $row["capacity"]?> </td>
-        <td><?php echo  $row["hoursAvailableS"]?>  - <?php echo $row["hoursAvailableE"]?> </td>
-
-        <input type = "hidden" id = "deleteField" name = "deleteRow">
-            <td><button onclick="remove()">Delete</button></td>
-        <script>
-            function remove()
-            {
-                var userchoice;
-                if (confirm("Are you sure you want to delete this room?"))
-                {
-                    userchoice = "delete"
-                } else {
-                    userchoice = null;
-                }
-                document.getElementById("deleteField").value = userchoice;
-            }
-        </script>
-        <?php
-
-    $delete = null;
-    if (isset($_POST["deleteRow"]))
-    {
-        $delete = $row["id"];
-    }
-
-    // Will only delete row if "confirmed" is equal to the id of the row we want to delete
-    if($delete != "no" && $delete != null)
-    {
-        // Issue the query
-        $sql = "DELETE FROM `rooms` WHERE id = '$delete'";
-        //mysqli_query($db, $sql);
-        echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
-    }
-    ?>
-
-        </tr>
-     </form>
-     <?php } ?>
-     </tbody>
-    </table>
- <?php } ?>
-<div></div>
-<?php if($result2->num_rows == 0) { ?>
-    <div class="alert alert-primary" role="alert">
-        No bookings have been made for your rooms yet!
-    </div>
-<?php } else { ?>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Meeting Name</th>
-            <th>Time</th>
-            <th>Date</th>
-            <th>Room No.</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php while ($row = $result2->fetch_assoc()) { ?>
+            <tbody>
+            <?php while ($row = $result->fetch_assoc()) { ?>
+                <form action="ownerhome.php" method="post">
+                    <tr>
+                        <td> <?php echo  $row["roomNumber"]?> </td>
+                        <td><?php echo  $row["building"]?> </td>
+                        <td> <?php echo  $row["institute"]?> </td>
+                        <td><?php echo  $row["capacity"]?> </td>
+                        <td><?php echo  $row["hoursAvailableS"]?>  - <?php echo $row["hoursAvailableE"]?> </td>
+                        <?php $id = $row["id"]?>
+                        <td><button class="btn btn-outline-danger" name="<?php echo $id;?>" data-dismiss="modal">Delete</button></td>
+                        <?php
+                        if(isset($_POST[$id]))
+                        {
+                            $sql = "DELETE FROM `rooms` WHERE `rooms`.`id` = '$id'";
+                            mysqli_query($db, $sql);
+                            header("Location: ownerhome.php");
+                        }
+                        ?>
+<!--                        <input type = "hidden" id = "deleteField" name = "deleteRow">-->
+<!--                        <td><button onclick="remove()">Delete</button></td>-->
+<!--                        <script>-->
+<!--                            function remove()-->
+<!--                            {-->
+<!--                                var userchoice;-->
+<!--                                if (confirm("Are you sure you want to delete this room?"))-->
+<!--                                {-->
+<!--                                    userchoice = "delete"-->
+<!--                                } else {-->
+<!--                                    userchoice = null;-->
+<!--                                }-->
+<!--                                document.getElementById("deleteField").value = userchoice;-->
+<!--                            }-->
+<!--                        </script>-->
+<!--                        --><?php
+//
+//                        $delete = null;
+//                        if (isset($_POST["deleteRow"]))
+//                        {
+//                            $delete = $row["id"];
+//                        }
+//
+//                        // Will only delete row if "confirmed" is equal to the id of the row we want to delete
+//                        if($delete != "no" && $delete != null)
+//                        {
+//                            // Issue the query
+//                            $sql = "DELETE FROM `rooms` WHERE id = '$delete'";
+//                            //mysqli_query($db, $sql);
+//                            echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
+//                        }
+//                        ?>
+                    </tr>
+                </form>
+            <?php } ?>
+            </tbody>
+        </table>
+    <?php } ?>
+    <div></div>
+    <?php if($result2->num_rows == 0) { ?>
+        <div class="alert alert-primary" role="alert">
+            No bookings have been made for your rooms yet!
+        </div>
+    <?php } else { ?>
+        <table class="table">
+            <thead>
             <tr>
-                <td> <?php echo $row["meeting_name"]?> </td>
-                <td><?php echo  $row["start_time"]?> - <?php echo $row["end_time"]?></td>
-                <td><?php echo  $row["meeting_date"]?> </td>
-                <td><?php echo   $row["roomNumber"]?> </td>
-
+                <th>Meeting Name</th>
+                <th>Time</th>
+                <th>Date</th>
+                <th>Room No.</th>
             </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-<?php } ?>
+            </thead>
+            <tbody>
+            <?php while ($row = $result2->fetch_assoc()) { ?>
+                <tr>
+                    <td> <?php echo $row["meeting_name"]?> </td>
+                    <td><?php echo  $row["start_time"]?> - <?php echo $row["end_time"]?></td>
+                    <td><?php echo  $row["meeting_date"]?> </td>
+                    <td><?php echo   $row["roomNumber"]?> </td>
+
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    <?php } ?>
 
 
 </div>
