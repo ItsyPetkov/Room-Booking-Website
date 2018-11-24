@@ -44,7 +44,7 @@
                 <div class="input-group clockpicker">
                     <input type="text" class="form-control" name="timestart" id="timestart" placeholder="00:00" pattern="(09|10|11|12|13|14|15|16):[0-5][0-9]" autocomplete="off" value="<?php if(isset($_POST['timestart'])) echo $_POST['timestart']; ?>" required>
                     <div class="invalid-feedback">
-                        Please, enter the time of the meeting (between 09:00 and 17:00)!
+                        Please give a time of avalability between 09:00 and 17:00
                     </div>
                 </div>
             </div>
@@ -56,12 +56,12 @@
                 <div class="input-group clockpicker">
                     <input type="text" class="form-control" name="timeend" id="timeend" placeholder="00:00" pattern="(09|10|11|12|13|14|15|16):[0-5][0-9]" autocomplete="off" value="<?php if(isset($_POST['timeend'])) echo $_POST['timeend']; ?>" required>
                     <div class="invalid-feedback">
-                        Please, enter the time of the meeting (between 09:00 and 17:00)!
+                        Please give a time of avalability between 09:00 and 17:00
                     </div>
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-outline-primary" name="submitStep2">Submit</button>
+        <button type="submit" class="btn btn-outline-primary" name="submit">Submit</button>
     </form>
     <?php
     //info for adding to db
