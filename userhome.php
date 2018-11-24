@@ -8,33 +8,33 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Homepage</title>
 
-<?php
-/**
- * Created by IntelliJ IDEA.
- * User: rnb16141
- * Date: 14/11/2018
- * Time: 14:22
- */
+    <?php
+    /**
+     * Created by IntelliJ IDEA.
+     * User: rnb16141
+     * Date: 14/11/2018
+     * Time: 14:22
+     */
 
 
 
-session_start();
-if($_SESSION['user-type'] === 'owner')
-{
-    header("location:ownerhome.php");
-}
+    session_start();
+    if($_SESSION['user-type'] === 'owner')
+    {
+        header("location:ownerhome.php");
+    }
 
 
-$id = $_SESSION['id'];
-$name = $_SESSION['name'];
-$email = $_SESSION['email'];
+    $id = $_SESSION['id'];
+    $name = $_SESSION['name'];
+    $email = $_SESSION['email'];
 
-include("includes/config.php");
-include("includes/db.php");
-include("includes/header.php");
+    include("includes/config.php");
+    include("includes/db.php");
+    include("includes/header.php");
 
-$result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms r ON (r.id = b.room_id) WHERE b.user_id = '$id'");
-?>
+    $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms r ON (r.id = b.room_id) WHERE b.user_id = $id");
+    ?>
 
 <body>
 
@@ -45,7 +45,8 @@ $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms
             <form action = 'bookroom.php' method = 'post'>
                 <button name ='book' class='btn btn-outline-primary' /> Book a Room!</button></form>
         </div>
-    <?php } else { ?>
+    <?php } else { echo "rows = ". $result->num_rows; echo "id = ".$id; ?>
+
         <table class="table">
             <thead>
             <tr>
@@ -58,58 +59,58 @@ $result = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms
             </thead>
             <tbody>
             <?php while ($row = $result->fetch_assoc()) { ?>
-            <form action="userhome.php" method="post">
-            <tr>
-                    <td><?php echo $row["meeting_name"]; ?></td>
-                    <td><?php echo $row["start_time"]." - ".$row["end_time"]; ?></td>
-                    <td><?php echo $row["meeting_date"]; ?></td>
-                    <td><?php echo $row["institution"]; ?></td>
-                    <td><?php echo $row["roomNumber"]; ?></td>
-                    <?php $id = $row["booking_id"]?>
-                    <td><button class="btn btn-outline-danger" name="<?php echo $id;?>" data-dismiss="modal">Delete</button></td>
-                    <?php
-                    if(isset($_POST[$id]))
-                    {
-                        $sql = "DELETE FROM `bookings` WHERE `bookings`.`booking_id` = '$id'";
-                        mysqli_query($db, $sql);
-                        header("Location: userhome.php");
-                    }
-                    ?>
+                <form action="userhome.php" method="post">
+                    <tr>
+                        <td><?php echo $row["meeting_name"]; ?></td>
+                        <td><?php echo $row["start_time"]." - ".$row["end_time"]; ?></td>
+                        <td><?php echo $row["meeting_date"]; ?></td>
+                        <td><?php echo $row["institution"]; ?></td>
+                        <td><?php echo $row["roomNumber"]; ?></td>
+                        <?php $bid = $row["booking_id"]?>
+                        <td><button class="btn btn-outline-danger" name="<?php echo $bid;?>" data-dismiss="modal">Delete</button></td>
+                        <?php
+                        if(isset($_POST[$bid]))
+                        {
+                            $sql = "DELETE FROM `bookings` WHERE `bookings`.`booking_id` = '$bid'";
+                            mysqli_query($db, $sql);
+                            header("Location: userhome.php");
+                        }
+                        ?>
 
-<!--                    <input type = "hidden" id = "deleteField" name = "deleteRow">-->
-<!--                    <td><button onclick="remove()">Delete</button></td>-->
-<!--                    <script>-->
-<!--                        function remove()-->
-<!--                        {-->
-<!--                            var userchoice;-->
-<!--                            if (confirm("Are you sure you want to delete this room?"))-->
-<!--                            {-->
-<!--                                userchoice = "delete"-->
-<!--                            } else {-->
-<!--                                userchoice = null;-->
-<!--                            }-->
-<!--                            document.getElementById("deleteField").value = userchoice;-->
-<!--                        }-->
-<!--                    </script>-->
-<!--                    --><?php
-//
-//                    $delete = null;
-//                    if (isset($_POST["deleteRow"]))
-//                    {
-//                        $delete = $_POST["deleteRow"];
-//                    }
-//
-//                    // Will only delete row if "confirmed" is equal to the id of the row we want to delete
-//                    if($delete != "no" && $delete != null)
-//                    {
-//                        // Issue the query
-//                        $sql = "DELETE FROM `bookings` WHERE id = '$delete'";
-//                        //mysqli_query($db, $sql);
-//                        echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
-//                    }
-//                    ?>
-                </tr>
-            </form>
+                        <!--                    <input type = "hidden" id = "deleteField" name = "deleteRow">-->
+                        <!--                    <td><button onclick="remove()">Delete</button></td>-->
+                        <!--                    <script>-->
+                        <!--                        function remove()-->
+                        <!--                        {-->
+                        <!--                            var userchoice;-->
+                        <!--                            if (confirm("Are you sure you want to delete this room?"))-->
+                        <!--                            {-->
+                        <!--                                userchoice = "delete"-->
+                        <!--                            } else {-->
+                        <!--                                userchoice = null;-->
+                        <!--                            }-->
+                        <!--                            document.getElementById("deleteField").value = userchoice;-->
+                        <!--                        }-->
+                        <!--                    </script>-->
+                        <!--                    --><?php
+                        //
+                        //                    $delete = null;
+                        //                    if (isset($_POST["deleteRow"]))
+                        //                    {
+                        //                        $delete = $_POST["deleteRow"];
+                        //                    }
+                        //
+                        //                    // Will only delete row if "confirmed" is equal to the id of the row we want to delete
+                        //                    if($delete != "no" && $delete != null)
+                        //                    {
+                        //                        // Issue the query
+                        //                        $sql = "DELETE FROM `bookings` WHERE id = '$delete'";
+                        //                        //mysqli_query($db, $sql);
+                        //                        echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
+                        //                    }
+                        //                    ?>
+                    </tr>
+                </form>
             <?php } ?>
             </tbody>
         </table>
