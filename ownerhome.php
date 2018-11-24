@@ -90,7 +90,7 @@
     $delete = null;
     if (isset($_POST["deleteRow"]))
     {
-        $delete = $_POST["deleteRow"];
+        $delete = $row["id"];
     }
 
     // Will only delete row if "confirmed" is equal to the id of the row we want to delete
