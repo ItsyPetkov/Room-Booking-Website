@@ -70,14 +70,35 @@
                         <td><?php echo  $row["capacity"]?> </td>
                         <td><?php echo  $row["hoursAvailableS"]?>  - <?php echo $row["hoursAvailableE"]?> </td>
                         <?php $rid = $row["id"]?>
-                        <td><button class="btn btn-outline-danger" name="<?php echo $rid;?>" data-dismiss="modal">Delete</button></td>
+                        <td><button type="button" class="btn btn-outline-danger" name="delete" data-target='#confirmDeletion' data-toggle="modal">Delete</button></td>
+
+                        <div class="modal fade" role="dialog" id="confirmDeletion" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title">Deletion Confirmation</h6>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="ownerhome.php" method="post">
+                                            <div class="form-group">
+                                                Are you sure you want to delete this?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" name="<?php echo $rid;?>" class="btn btn-outline-success">Yes</button>
+                                                <button class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <?php
-                        if(isset($_POST[$rid]))
-                        {
-                            $sql = "DELETE FROM `rooms` WHERE `rooms`.`id` = '$rid'";
-                            mysqli_query($db, $sql);
-                            header("Location: ownerhome.php");
-                        }
+                                                if(isset($_POST[$rid]))
+                                                {
+                                                    $sql = "DELETE FROM `rooms` WHERE `rooms`.`id` = '$rid'";
+                                                    mysqli_query($db, $sql);
+                                                    header("Location: ownerhome.php");
+                                                }
                         ?>
                         <!--                        <input type = "hidden" id = "deleteField" name = "deleteRow">-->
                         <!--                        <td><button onclick="remove()">Delete</button></td>-->
