@@ -24,7 +24,7 @@ include("includes/header.php");?>
         <div class="form-group row">
             <label for="num" class="col-sm-2 col-form-label">Room number:</label>
             <div class="col-md-6 mb-3">
-                <input type="text" class="form-control" name="num" id="num" placeholder="Enter room number." autocomplete="off" required>
+                <input type="text" class="form-control" name="num" id="num" placeholder="Enter room number" autocomplete="off" required>
                 <div class="invalid-feedback">
                     Please include a room number.
                 </div>
