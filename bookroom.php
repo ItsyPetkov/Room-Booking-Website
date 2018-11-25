@@ -68,7 +68,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Book room</title>
+		<title>Book Room</title>
 		<!-- Bootstrap core CSS -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<!-- Clockpicker CSS -->
@@ -82,7 +82,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<h1 class="text-center">Book a room</h1>
+					<h1 class="text-center">Book a Room</h1>
 				</div>
 			</div>
 			<?php if ($booked == true) { ?>

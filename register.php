@@ -132,7 +132,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
                 <form class="needs-validation" novalidate action="" method="post">
                     <div class="form-group row">
                         <label for="name" class="col-sm-2 col-form-label">Name:</label>
@@ -141,7 +140,6 @@
                             <div class="invalid-feedback">
                                 Please, enter a name.
                             </div>
-                        </div>
                     </div>
 
                     <div class="form-group row">

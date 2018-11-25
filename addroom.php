@@ -12,7 +12,13 @@
     <?php
     session_start();
     include("includes/header.php");?>
-    <h1>Add A Room Bitch </h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+    <h1>Add a Room</h1>
+            </div>
+        </div>
+    </div>
 <body>
 <div>
     <form class="needs-validation" novalidate enctype="multipart/form-data" action="addroom.php" method="post">
