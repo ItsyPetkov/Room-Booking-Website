@@ -165,7 +165,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="institute" class="col-sm-2 col-form-label">Institure:</label>
+                        <label for="institute" class="col-sm-2 col-form-label">Institute:</label>
                         <div class="col-md-6 mb-3">
                             <input type="text" class="form-control" name="institute" id="institute" placeholder="Please enter an institute." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['institute'];} ?>" required>
                             <div class="invalid-feedback">
