@@ -9,18 +9,17 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap-clockpicker.min.css">
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
-    <?php
-    session_start();
-    include("includes/header.php");?>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-    <h1>Add a Room</h1>
-            </div>
+<body>
+<?php
+session_start();
+include("includes/header.php");?>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Add a Room</h1>
         </div>
     </div>
-<body>
-<div>
+    <div>
     <form class="needs-validation" novalidate enctype="multipart/form-data" action="addroom.php" method="post">
         <div class="form-group row">
             <label for="num" class="col-sm-2 col-form-label">Room number:</label>
@@ -157,5 +156,6 @@
         // Get the element with id="defaultOpen" and click on it
         document.getElementById("defaultOpen").click();
     </script>
+    </div>
 </body>
 </html>
