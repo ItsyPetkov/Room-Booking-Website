@@ -31,6 +31,7 @@
     $result2 = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms r ON (r.id = b.room_id) WHERE b.institution = '$inst'");
     ?>
     <br>
+    <br>
 
 <body>
 <div class="container">
