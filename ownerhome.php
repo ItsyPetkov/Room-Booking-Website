@@ -54,7 +54,6 @@
             <thead>
             <tr>
                 <th>Room Number </th>
-                <th>Building </th>
                 <th>Institute </th>
                 <th>Capacity </th>
                 <th>Hours Available </th>
@@ -65,7 +64,6 @@
                 <form action="ownerhome.php" method="post">
                     <tr>
                         <td> <?php echo  $row["roomNumber"]?> </td>
-                        <td><?php echo  $row["building"]?> </td>
                         <td> <?php echo  $row["institute"]?> </td>
                         <td><?php echo  $row["capacity"]?> </td>
                         <td><?php echo  $row["hoursAvailableS"]?>  - <?php echo $row["hoursAvailableE"]?> </td>
