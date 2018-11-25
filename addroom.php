@@ -157,6 +157,5 @@ include("includes/header.php");?>
         document.getElementById("defaultOpen").click();
     </script>
     </div>
-    
 </body>
 </html>
