@@ -23,7 +23,7 @@
             <?php } ?>
 		</ul>
 		<span style="margin-right: 10px" class="navbar-text">
-			Hi, <?php echo $name; ?>
+			Hi, <?php echo $_SESSION['name']; ?>
 		</span>
         <a style="margin-right: 5px" class="btn btn-outline-info my-2 my-sm-0" href="details.php">Your Details</a>
 		<a style="margin-right: 10px" class="btn btn-outline-secondary my-2 my-sm-0" href="logout.php">Log out</a>
