@@ -29,7 +29,16 @@
 		/* PHP form from step 1 validation */
 
         // query DB for matches
-        $rooms_sql = mysqli_query($db, "SELECT * FROM rooms r LEFT JOIN bookings b ON (r.id = b.room_id) WHERE capacity >= '$capacity' AND institute = '$location'");
+        $rooms_sql = mysqli_query($db, "SELECT * FROM rooms
+                                                  WHERE institute = '$location'
+                                                    AND capacity >= '$capacity'
+                                                    AND id NOT IN (SELECT b.room_id
+                                                                      FROM bookings b
+                                                                      JOIN rooms r ON (r.id = b.room_id)
+                                                                      WHERE r.institute = '$location'
+                                                                        AND b.meeting_date = '$date'
+                                                                        AND '$start_time' BETWEEN b.start_time AND b.end_time
+                                                                        OR '$end_time' BETWEEN b.start_time AND b.end_time)");
 
 		$formStep = 2;
 	}
@@ -44,7 +53,16 @@
         $room = mysqli_real_escape_string($db, $_POST["roomRadio"]);
 
         // query DB for matches
-        $rooms_sql = mysqli_query($db, "SELECT * FROM rooms r LEFT JOIN bookings b ON (r.id = b.room_id) WHERE capacity >= '$capacity' AND institute = '$location' AND hoursAvailableS <= '$start_time' AND hoursAvailableE  >= '$start_time' AND hoursAvailableS <= '$end_time' AND hoursAvailableE  >= '$end_time' AND hoursAvailableE");
+        $rooms_sql = mysqli_query($db, "SELECT * FROM rooms
+                                                  WHERE institute = '$location'
+                                                    AND capacity >= '$capacity'
+                                                    AND id NOT IN (SELECT b.room_id
+                                                                      FROM bookings b
+                                                                      JOIN rooms r ON (r.id = b.room_id)
+                                                                      WHERE r.institute = '$location'
+                                                                        AND b.meeting_date = '$date'
+                                                                        AND '$start_time' BETWEEN b.start_time AND b.end_time
+                                                                        OR '$end_time' BETWEEN b.start_time AND b.end_time)");
 
         // PHP form from step 2 validation
 		// if valid --> show summary of details for confirmation
@@ -58,7 +76,11 @@
 		$location = mysqli_real_escape_string($db, $_POST["location"]);
 		$capacity = mysqli_real_escape_string($db, $_POST["capacity"]);
 		$room = mysqli_real_escape_string($db, $_POST["roomRadio"]);
+
 		// update DB
+        $add_booking_sql = "INSERT INTO bookings (`room_id`,`meeting_name`,`start_time`,`end_time`,`meeting_date`,`institution`,`user_id`)
+                                          VALUES ('$room','$meeting_name','$start_time','$end_time','$date','$location','$id')";
+        mysqli_query($db, $add_booking_sql);
 		// send confirmation email with booking details
 		$booked = true;
 	}
@@ -240,7 +262,7 @@
                                 } ?>
 							</tbody>
 						</table>
-						<input type="hidden" name="name" value="<?php echo $name; ?>">
+						<input type="hidden" name="name" value="<?php echo $meeting_name; ?>">
 						<input type="hidden" name="startTime" value="<?php echo $start_time; ?>">
                         <input type="hidden" name="endTime" value="<?php echo $end_time; ?>">
 						<input type="hidden" name="date" value="<?php echo $date; ?>">
@@ -264,7 +286,7 @@
 						<tbody>
 							<tr>
 								<th scope="row"><h6>Meeting name</h6></th>
-								<td><?php echo $name; ?></td>
+								<td><?php echo $meeting_name; ?></td>
 								<td></td>
 								<td></td>
 							</tr>
@@ -290,7 +312,7 @@
 						</tbody>
 					</table>
 					<form class="needs-validation" novalidate action="" method="post">
-						<input type="hidden" name="name" value="<?php echo $name; ?>">
+						<input type="hidden" name="name" value="<?php echo $meeting_name; ?>">
                         <input type="hidden" name="startTime" value="<?php echo $start_time; ?>">
                         <input type="hidden" name="endTime" value="<?php echo $end_time; ?>">
 						<input type="hidden" name="date" value="<?php echo $date; ?>">

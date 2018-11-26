@@ -46,6 +46,8 @@ if(isset($_POST['LogIn'])) {
                     $_SESSION['inst'] = $row['institute'];
                     header("location:ownerhome.php");
                 }
+
+                $_SESSION['logged-in'] = true;
             }
         } else {
             $wrong_acc_info = "Wrong email or password!";

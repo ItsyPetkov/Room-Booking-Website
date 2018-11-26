@@ -16,7 +16,7 @@ include("includes/header.php");?>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Add a Room</h1>
+            <h2>Add a Room</h2>
         </div>
     </div>
     <div>

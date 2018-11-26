@@ -1,89 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <title>Homepage</title>
+<?php
 
-    <?php
     session_start();
-    if($_SESSION['user-type'] === 'normal')
-    {
+
+    if(!isset($_SESSION['logged-in']) || $_SESSION['logged-in'] != true) {
+        header("location:login.php");
+    }
+    if($_SESSION['user-type'] === 'normal') {
         header("location:userhome.php");
     }
 
+    $id = $_SESSION['id'];
     $name = $_SESSION['name'];
     $email = $_SESSION['email'];
     $inst = $_SESSION['inst'];
-    include("includes/header.php");
+
     include("includes/config.php");
     include("includes/db.php");
 
-    if ($db->connect_error) die("Connection failed: " . $db->connect_error);
+    $rooms = mysqli_query($db, "SELECT * FROM rooms WHERE institute = '$inst'");
 
+    $bookings = mysqli_query($db, "SELECT b.*, r.roomNumber, u.name FROM bookings b JOIN rooms r ON (r.id = b.room_id) JOIN users u ON (u.id = b.user_id) WHERE b.institution = '$inst'");
 
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width = device-width, initial-scale = 1">
+        <title>Homepage</title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    </head>
+    <body>
 
-    $result = mysqli_query($db, "SELECT * FROM rooms WHERE institute = '$inst'");
+        <?php include("includes/header.php");?>
 
-    $result2 = mysqli_query($db, "SELECT b.*, r.roomNumber FROM bookings b JOIN rooms r ON (r.id = b.room_id) WHERE b.institution = '$inst'");
-    ?>
-    <br>
-    <br>
+        <div class="container">
+            <h2>Rooms</h2>
 
-<body>
-<div class="container">
-    <?php /**
-     * Created by IntelliJ IDEA.
-     * User: rnb16141
-     * Date: 14/11/2018
-     * Time: 14:23
-     */?>
+            <?php if($rooms->num_rows == 0) { ?>
 
-    <?php if($result->num_rows == 0) { ?>
-        <div class="alert alert-primary" role="alert">
-            Your institution hasn't added any rooms yet!
-            <form action = 'addroom.php' method = 'post'>
-                <button name ='add' class='btn btn-outline-primary' /> Add Room</button></form>
-        </div>
+                <div class="alert alert-primary" role="alert">
+                    Your institution hasn't added any rooms yet!
+                    <hr>
+                    <a href="addroom.php" class='btn btn-outline-primary'>Add Room</a>
+                </div>
 
-    <?php } else { ?>
+            <?php } else { ?>
 
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Room Number </th>
-                <th>Institute </th>
-                <th>Capacity </th>
-                <th>Hours Available </th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php while ($row = $result->fetch_assoc()) { ?>
-                <form action="ownerhome.php" method="post">
-                    <tr>
-                        <td> <?php echo  $row["roomNumber"]?> </td>
-                        <td> <?php echo  $row["institute"]?> </td>
-                        <td><?php echo  $row["capacity"]?> </td>
-                        <td><?php echo  $row["hoursAvailableS"]?>  - <?php echo $row["hoursAvailableE"]?> </td>
-                        <?php $rid = $row["id"]?>
-                        <td><button type="button" class="btn btn-outline-danger" name="delete" data-target='#confirmDeletion' data-toggle="modal">Delete</button></td>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Room Number</th>
+                            <th>Building</th>
+                            <th>Institute</th>
+                            <th>Capacity</th>
+                            <th>Hours Available</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                        <div class="modal fade" role="dialog" id="confirmDeletion" tabindex="-1">
+                    <?php while ($row = $rooms->fetch_assoc()) { ?>
+
+                        <tr>
+                            <td><?php echo $row["roomNumber"]; ?></td>
+                            <td><?php echo $row["building"]; ?></td>
+                            <td><?php echo $row["institute"]; ?></td>
+                            <td><?php echo $row["capacity"]; ?></td>
+                            <td><?php echo $row["hoursAvailableS"]; ?>  - <?php echo $row["hoursAvailableE"]; ?></td>
+                            <td><button type="button" class="btn btn-outline-danger" name="delete" data-target='#confirmDeletion<?php echo $row["id"]; ?>' data-toggle="modal">Delete</button></td
+                        </tr>
+                        <div class="modal fade" role="dialog" id="confirmDeletion<?php echo $row["id"]; ?>" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h6 class="modal-title">Deletion Confirmation</h6>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="ownerhome.php" method="post">
+                                        <form action="removeRooms.php" method="post">
                                             <div class="form-group">
-                                                Are you sure you want to delete this?
+                                                Are you sure you want to delete room <?php echo $row["roomNumber"]; ?> from building <?php echo $row["building"]; ?>?
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" name="<?php echo $rid;?>" class="btn btn-outline-success">Yes</button>
+                                                <input type="hidden" name="roomId" value="<?php echo $row['id'];?>" />
+                                                <button type="submit" name="delete" class="btn btn-outline-success">Yes</button>
                                                 <button class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
                                             </div>
                                         </form>
@@ -91,87 +92,59 @@
                                 </div>
                             </div>
                         </div>
-                        <?php
-                                                if(isset($_POST[$rid]))
-                                                {
-                                                    $sql = "DELETE FROM `rooms` WHERE `rooms`.`id` = '$rid'";
-                                                    mysqli_query($db, $sql);
-                                                    header("Location: ownerhome.php");
-                                                }
-                        ?>
-                        <!--                        <input type = "hidden" id = "deleteField" name = "deleteRow">-->
-                        <!--                        <td><button onclick="remove()">Delete</button></td>-->
-                        <!--                        <script>-->
-                        <!--                            function remove()-->
-                        <!--                            {-->
-                        <!--                                var userchoice;-->
-                        <!--                                if (confirm("Are you sure you want to delete this room?"))-->
-                        <!--                                {-->
-                        <!--                                    userchoice = "delete"-->
-                        <!--                                } else {-->
-                        <!--                                    userchoice = null;-->
-                        <!--                                }-->
-                        <!--                                document.getElementById("deleteField").value = userchoice;-->
-                        <!--                            }-->
-                        <!--                        </script>-->
-                        <!--                        --><?php
-                        //
-                        //                        $delete = null;
-                        //                        if (isset($_POST["deleteRow"]))
-                        //                        {
-                        //                            $delete = $row["id"];
-                        //                        }
-                        //
-                        //                        // Will only delete row if "confirmed" is equal to the id of the row we want to delete
-                        //                        if($delete != "no" && $delete != null)
-                        //                        {
-                        //                            // Issue the query
-                        //                            $sql = "DELETE FROM `rooms` WHERE id = '$delete'";
-                        //                            //mysqli_query($db, $sql);
-                        //                            echo "If you see this then that means the confirmation works. Just need to uncomment the delete statement";
-                        //                        }
-                        //                        ?>
-                    </tr>
-                </form>
+                    <?php } ?>
+
+                    </tbody>
+                </table>
+
             <?php } ?>
-            </tbody>
-        </table>
-    <?php } ?>
-    <div></div>
-    <?php if($result2->num_rows == 0) { ?>
-        <div class="alert alert-primary" role="alert">
-            No bookings have been made for your rooms yet!
+
+            <hr>
+            <h2>Bookings</h2>
+
+            <?php if($bookings->num_rows == 0) { ?>
+
+                <div class="alert alert-primary" role="alert">
+                    No bookings have been made for your rooms yet!
+                </div>
+
+            <?php } else { ?>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Meeting Name</th>
+                            <th>User</th>
+                            <th>Room No.</th>
+                            <th>Time</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    <?php while ($row = $bookings->fetch_assoc()) { ?>
+
+                        <tr>
+                            <td><?php echo $row["meeting_name"]; ?></td>
+                            <td><?php echo $row["name"]; ?></td>
+                            <td><?php echo $row["roomNumber"]; ?></td>
+                            <td><?php echo $row["start_time"]; ?> - <?php echo $row["end_time"]; ?></td>
+                            <td><?php echo $row["meeting_date"]; ?></td>
+                        </tr>
+
+                    <?php } ?>
+
+                    </tbody>
+                </table>
+
+            <?php } ?>
+
         </div>
-    <?php } else { ?>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Meeting Name</th>
-                <th>Time</th>
-                <th>Date</th>
-                <th>Room No.</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php while ($row = $result2->fetch_assoc()) { ?>
-                <tr>
-                    <td> <?php echo $row["meeting_name"]?> </td>
-                    <td><?php echo  $row["start_time"]?> - <?php echo $row["end_time"]?></td>
-                    <td><?php echo  $row["meeting_date"]?> </td>
-                    <td><?php echo   $row["roomNumber"]?> </td>
 
-                </tr>
-            <?php } ?>
-            </tbody>
-        </table>
-    <?php } ?>
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
 
-
-</div>
-
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-
-
-</body>
+    </body>
 </html>
+
+}

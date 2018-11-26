@@ -16,9 +16,10 @@ $name = $_SESSION['name'];
 <body>
 <?php include("includes/header.php"); ?>
 <div class="container">
+    <h2>Account details</h2>
     <form>
         <table class="table table-hover">
-            <tr class="active"><th></th><th></th><th></th></tr>
+            <tbody>
             <?php
             /**
              * Created by IntelliJ IDEA.
@@ -60,6 +61,7 @@ $name = $_SESSION['name'];
             echo "<p>Want to change your password? <a href=\"newPass.php\">Change here</a></p>"
 
             ?>
+            </tbody>
         </table>
     </form>
     <div class="modal fade" role="dialog" id="editNamePage" tabindex="-1">
