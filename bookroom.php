@@ -237,7 +237,6 @@
 							<thead>
 								<tr>
 									<th scope="col">Room Number</th>
-									<th scope="col">Building</th>
 									<th scope="col">Institute</th>
 									<th scope="col">Capacity</th>
                                     <th scope="col"></th>
@@ -248,7 +247,6 @@
                                     while($row = $rooms_sql->fetch_assoc()) { ?>
                                         <tr>
                                             <td><?php echo $row['roomNumber'] ?></td>
-                                            <td><?php echo $row['building'] ?></td>
                                             <td><?php echo $row['institute'] ?></td>
                                             <td><?php echo $row['capacity'] ?></td>
                                             <td>
